@@ -5,4 +5,11 @@ go:
   - tip
 
 install:
+# Gin Framework
   - go get github.com/gin-gonic/gin
+# Sentry
+  - go get github.com/getsentry/raven-go
+# Cache
+  - go get github.com/robfig/go-cache
+  - go get github.com/garyburd/redigo/redis
+  - go get github.com/bradfitz/gomemcache/memcache
