@@ -165,7 +165,7 @@ func Secure(options Options) gin.HandlerFunc {
 	s := New(options)
 
 	return func(c *gin.Context) {
-		err := s.process(c.Writer, c.Req)
+		err := s.process(c.Writer, c.Request)
 		if err != nil {
 			if c.Writer.Written() {
 				c.Abort(-1)
