@@ -37,7 +37,7 @@ func (g *gzipWriter) Write(data []byte) (int, error) {
 func Gzip(level int) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		req := c.Req
+		req := c.Request
 		if !strings.Contains(req.Header.Get(headerAcceptEncoding), encodingGzip) {
 			c.Next()
 			return
