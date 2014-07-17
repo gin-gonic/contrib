@@ -5,23 +5,23 @@ import (
 	"crypto/sha1"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"net/url"
-	"net/http"
 	"io"
+	"net/http"
+	"net/url"
 	"time"
 )
 
 const (
-	DEFAULT = time.Duration(0)
-	FOREVER = time.Duration(-1)
+	DEFAULT              = time.Duration(0)
+	FOREVER              = time.Duration(-1)
 	CACHE_MIDDLEWARE_KEY = "gincontrib.cache"
 )
 
 var (
 	PageCachePrefix = "gincontrib.page.cahe"
-	ErrCacheMiss = errors.New("cache: key not found.")
-	ErrNotStored = errors.New("cache: not stored.")
-	ErrNotSupport = errors.New("cache: not support.")
+	ErrCacheMiss    = errors.New("cache: key not found.")
+	ErrNotStored    = errors.New("cache: not stored.")
+	ErrNotSupport   = errors.New("cache: not support.")
 )
 
 type CacheStore interface {
@@ -38,16 +38,16 @@ type CacheStore interface {
 type responseCache struct {
 	status int
 	header http.Header
-	data []byte
+	data   []byte
 }
 
 type cachedWriter struct {
 	gin.ResponseWriter
-	status int
+	status  int
 	written bool
-	store CacheStore
-	expire time.Duration
-	key string
+	store   CacheStore
+	expire  time.Duration
+	key     string
 }
 
 func urlEscape(prefix string, u string) string {
@@ -85,14 +85,14 @@ func (w *cachedWriter) Written() bool {
 func (w *cachedWriter) Write(data []byte) (int, error) {
 	ret, err := w.ResponseWriter.Write(data)
 	if err == nil {
-		//cache response 
+		//cache response
 		store := w.store
 		val := responseCache{
 			w.status,
 			w.Header(),
 			data,
 		}
-		err  = store.Set(w.key, val, w.expire)
+		err = store.Set(w.key, val, w.expire)
 		if err != nil {
 			// need logger
 		}
@@ -100,7 +100,7 @@ func (w *cachedWriter) Write(data []byte) (int, error) {
 	return ret, err
 }
 
-// Cache Middleware 
+// Cache Middleware
 func Cache(store *CacheStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set(CACHE_MIDDLEWARE_KEY, store)
@@ -109,10 +109,10 @@ func Cache(store *CacheStore) gin.HandlerFunc {
 }
 
 func SiteCache(store CacheStore, expire time.Duration) gin.HandlerFunc {
-	
+
 	return func(c *gin.Context) {
 		var cache responseCache
-		url := c.Req.URL
+		url := c.Request.URL
 		key := urlEscape(PageCachePrefix, url.RequestURI())
 		if err := store.Get(key, &cache); err != nil {
 			c.Next()
@@ -130,10 +130,10 @@ func SiteCache(store CacheStore, expire time.Duration) gin.HandlerFunc {
 
 // Cache Decorator
 func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) gin.HandlerFunc {
-	
+
 	return func(c *gin.Context) {
 		var cache responseCache
-		url := c.Req.URL
+		url := c.Request.URL
 		key := urlEscape(PageCachePrefix, url.RequestURI())
 		if err := store.Get(key, &cache); err != nil {
 			// replace writer
@@ -151,4 +151,3 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 		}
 	}
 }
-
