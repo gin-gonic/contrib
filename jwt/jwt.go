@@ -1,21 +1,19 @@
-package jwt_middleware
+package jwt
 
 import (
 	"errors"
-	jwt "github.com/dgrijalva/jwt-go"
+	jwt_lib "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-func JWT(secret []byte) gin.HandlerFunc {
+func Auth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token, err := jwt.ParseFromRequest(c.Request, func(token *jwt.Token) ([]byte, error) {
-			return secret, nil
+		_, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) ([]byte, error) {
+			return []byte(secret), nil
 		})
 
-		if err == nil && token.Valid {
-			c.Next()
-		} else {
-			c.Fail(401, errors.New("Unauthorized"))
+		if err != nil {
+			c.Fail(401, errors.New("Unauthorized token"))
 		}
 	}
 }
