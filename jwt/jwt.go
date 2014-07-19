@@ -1,7 +1,6 @@
 package jwt
 
 import (
-	"errors"
 	jwt_lib "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +12,7 @@ func Auth(secret string) gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.Fail(401, errors.New("Unauthorized token"))
+			c.Fail(401, err)
 		}
 	}
 }
