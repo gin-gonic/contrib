@@ -18,7 +18,7 @@ const (
 )
 
 var (
-	PageCachePrefix = "gincontrib.page.cahe"
+	PageCachePrefix = "gincontrib.page.cache"
 	ErrCacheMiss    = errors.New("cache: key not found.")
 	ErrNotStored    = errors.New("cache: not stored.")
 	ErrNotSupport   = errors.New("cache: not support.")
