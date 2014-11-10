@@ -14,19 +14,26 @@ func exists(name string) bool {
 }
 
 // Static returns a middleware handler that serves static files in the given directory.
-func Serve(directory string) gin.HandlerFunc {
-	directory, err := filepath.Abs(directory)
-	if err != nil {
-		panic(err)
+func Serve(directories ...interface{}) gin.HandlerFunc {
+	fileservers := []http.Handler{}
+
+	for i := 0; i < len(directories); i++ {
+		directory, err := filepath.Abs(directories[i].(string))
+		if err != nil {
+			panic(err)
+		}
+		fileservers = append(fileservers, http.FileServer(http.Dir(directory)))
 	}
-	fileserver := http.FileServer(http.Dir(directory))
-
+	
 	return func(c *gin.Context) {
-
-		p := path.Join(directory, c.Request.URL.Path)
-		if exists(p) {
-			fileserver.ServeHTTP(c.Writer, c.Request)
-			c.Abort(-1)
+		for i := 0; i < len(directories); i++ {
+			directory := directories[i].(string)
+			p := path.Join(directory, c.Request.URL.Path)
+			if exists(p) {
+				fileservers[i].ServeHTTP(c.Writer, c.Request)
+				c.Abort(-1)
+				break
+			}
 		}
 	}
 }
