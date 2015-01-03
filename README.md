@@ -1,4 +1,4 @@
-contrib
+gin-gonic/contrib
 =======
 Here you'll find middleware ready to  use with [Gin Framework](https://github.com/gin-gonic/gin). Submit your pull request, either with the package in a folder, or by adding a link to this `README.md`.
 
@@ -10,3 +10,6 @@ If adding a link to your own repository, please follow this example:
 ```
 
 Each author is responsible of maintaining his own code, although if you submit as a package, you allow the community to fix it. You can also submit a pull request to fix an existing package.
+
+======
+## List of external middleware
