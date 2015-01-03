@@ -1,5 +1,4 @@
-gin-gonic/contrib
-[![Build Status](https://travis-ci.org/gin-gonic/contrib.svg)](https://travis-ci.org/gin-gonic/contrib)
+# gin-gonic/contrib [![Build Status](https://travis-ci.org/gin-gonic/contrib.svg)](https://travis-ci.org/gin-gonic/contrib)
 =======
 Here you'll find middleware ready to  use with [Gin Framework](https://github.com/gin-gonic/gin). Submit your pull request, either with the package in a folder, or by adding a link to this `README.md`.
 

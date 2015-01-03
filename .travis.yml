@@ -24,5 +24,8 @@ install:
 # Sessions
   - go get github.com/gorilla/sessions
   - go get github.com/boj/redistore
-# Statis
+# Static
   - go get github.com/elazarl/go-bindata-assetfs
+# New Relic
+  - go get github.com/yvasiyarov/go-metrics
+  - go get github.com/yvasiyarov/gorelic

@@ -70,6 +70,7 @@ func AssetNames() []string {
 var _bindata = map[string]func() ([]byte, error){
 	"data/index.html": data_index_html,
 }
+
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
@@ -103,12 +104,12 @@ func AssetDir(name string) ([]string, error) {
 }
 
 type _bintree_t struct {
-	Func func() ([]byte, error)
+	Func     func() ([]byte, error)
 	Children map[string]*_bintree_t
 }
+
 var _bintree = &_bintree_t{nil, map[string]*_bintree_t{
 	"data": &_bintree_t{nil, map[string]*_bintree_t{
-		"index.html": &_bintree_t{data_index_html, map[string]*_bintree_t{
-		}},
+		"index.html": &_bintree_t{data_index_html, map[string]*_bintree_t{}},
 	}},
 }}
