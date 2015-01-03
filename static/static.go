@@ -24,7 +24,7 @@ func Serve(directories ...interface{}) gin.HandlerFunc {
 		}
 		fileservers = append(fileservers, http.FileServer(http.Dir(directory)))
 	}
-	
+
 	return func(c *gin.Context) {
 		for i := 0; i < len(directories); i++ {
 			directory := directories[i].(string)

@@ -200,4 +200,3 @@ func testAdd(t *testing.T, newCache cacheFactory) {
 		t.Errorf("Expected 3, got: %d", i)
 	}
 }
-

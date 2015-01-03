@@ -14,7 +14,6 @@ func TestInMemoryCache_TypicalGetSet(t *testing.T) {
 	typicalGetSet(t, newInMemoryStore)
 }
 
-
 func TestInMemoryCache_IncrDecr(t *testing.T) {
 	incrDecr(t, newInMemoryStore)
 }
@@ -34,4 +33,3 @@ func TestInMemoryCache_Replace(t *testing.T) {
 func TestInMemoryCache_Add(t *testing.T) {
 	testAdd(t, newInMemoryStore)
 }
-

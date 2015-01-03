@@ -7,7 +7,6 @@ import (
 	"strconv"
 )
 
-
 func serialize(value interface{}) ([]byte, error) {
 	if bytes, ok := value.([]byte); ok {
 		return bytes, nil

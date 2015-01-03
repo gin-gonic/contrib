@@ -7,7 +7,7 @@ import (
 
 // Wraps the Redis client to meet the Cache interface.
 type RedisStore struct {
-	pool *redis.Pool
+	pool              *redis.Pool
 	defaultExpiration time.Duration
 }
 
@@ -85,7 +85,6 @@ func (c *RedisStore) Get(key string, ptrValue interface{}) error {
 	}
 	return deserialize(item, ptrValue)
 }
-
 
 func exists(conn redis.Conn, key string) bool {
 	retval, _ := redis.Bool(conn.Do("EXISTS", key))
@@ -180,4 +179,3 @@ func (c *RedisStore) invoke(f func(string, ...interface{}) (interface{}, error),
 		return err
 	}
 }
-

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/christopherL91/contrib/jwt"
 	jwt_lib "github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/contrib/jwt"
 	"github.com/gin-gonic/gin"
 	"time"
 )
