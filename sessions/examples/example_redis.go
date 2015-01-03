@@ -1,4 +1,4 @@
-package main
+package mainredis
 
 import (
 	"github.com/gin-gonic/contrib/sessions"

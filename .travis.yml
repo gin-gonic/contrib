@@ -21,3 +21,6 @@ install:
   - go get github.com/bradfitz/gomemcache/memcache
 # JWT
   - go get github.com/dgrijalva/jwt-go
+# Sessions
+  - go get github.com/gorilla/sessions
+  - go get github.com/boj/redistore
