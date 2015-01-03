@@ -13,3 +13,5 @@ Each author is responsible of maintaining his own code, although if you submit a
 
 ======
 ## List of external middleware
+
++ [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
