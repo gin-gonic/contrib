@@ -1,4 +1,4 @@
-package main
+package maincookie
 
 import (
 	"github.com/gin-gonic/contrib/sessions"
