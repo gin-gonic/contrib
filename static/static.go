@@ -31,7 +31,7 @@ func Serve(directories ...interface{}) gin.HandlerFunc {
 			p := path.Join(directory, c.Request.URL.Path)
 			if exists(p) {
 				fileservers[i].ServeHTTP(c.Writer, c.Request)
-				c.Abort(-1)
+				c.Abort()
 				break
 			}
 		}
