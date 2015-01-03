@@ -57,7 +57,7 @@ type Session interface {
 
 func Sessions(name string, store Store) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		s := &session{name, c.Req, store, nil, false, c.Writer}
+		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
 		c.Next()
 	}
