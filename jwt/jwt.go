@@ -9,8 +9,7 @@ import (
 func Auth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		_, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) (interface{}, error) {
-			var b bytes.Buffer
-			b.Write([]byte(secret))
+			b := []byte(secret)
 			return b, nil
 		})
 
