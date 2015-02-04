@@ -168,7 +168,7 @@ func Secure(options Options) gin.HandlerFunc {
 		err := s.process(c.Writer, c.Request)
 		if err != nil {
 			if c.Writer.Written() {
-				c.Abort()
+				c.AbortWithStatus(c.Writer.Status())
 			} else {
 				c.Fail(http.StatusInternalServerError, err)
 			}
