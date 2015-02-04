@@ -9,16 +9,11 @@
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
-			"Comment": "v0.3-3-gc3abaf9",
-			"Rev": "c3abaf9afcd167475951249d5a406ba10b24a1d9"
+			"Rev": "5cfe2c56dd0692c474c3d97665d8de278ac69c61"
 		},
 		{
 			"ImportPath": "github.com/jacobsa/oglematchers",
 			"Rev": "00a5a2616650f55dd84f982eeb13153c5e1cffad"
-		},
-		{
-			"ImportPath": "github.com/julienschmidt/httprouter",
-			"Rev": "7deadb6844d2c6ff1dfb812eaa439b87cdaedf20"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey",

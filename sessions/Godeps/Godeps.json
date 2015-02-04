@@ -8,8 +8,7 @@
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
-			"Comment": "v0.2b-6-gc224bf8",
-			"Rev": "c224bf82111883dbe354edf9376642f615b7248e"
+			"Rev": "5cfe2c56dd0692c474c3d97665d8de278ac69c61"
 		},
 		{
 			"ImportPath": "github.com/gorilla/sessions",
