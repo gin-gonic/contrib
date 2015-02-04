@@ -83,7 +83,6 @@ func Serve(prefix string, fs ServeFileSystem) gin.HandlerFunc {
 
 		if fs.Exists(prefix, c.Request.URL.Path) {
 			fileserver.ServeHTTP(c.Writer, c.Request)
-			c.AbortWithStatus(c.Writer.Status())
 		} else {
 			c.Next()
 		}
