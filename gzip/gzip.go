@@ -49,7 +49,6 @@ func Gzip(level int) gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		defer gz.Close()
 
 		headers := writer.Header()
 		headers.Set(headerContentEncoding, encodingGzip)
@@ -59,5 +58,8 @@ func Gzip(level int) gin.HandlerFunc {
 		c.Writer = gzwriter
 		c.Next()
 		writer.Header().Del(headerContentLength)
+
+		gz.Close()
+		c.Writer = writer
 	}
 }
