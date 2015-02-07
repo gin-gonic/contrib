@@ -4,7 +4,7 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
-			"Rev": "5cfe2c56dd0692c474c3d97665d8de278ac69c61"
+			"Rev": "50e7e427300a7eeeb299a4cd5bc1ebfa04d48528"
 		}
 	]
 }
