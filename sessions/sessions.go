@@ -2,6 +2,7 @@ package sessions
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
@@ -60,6 +61,7 @@ func Sessions(name string, store Store) gin.HandlerFunc {
 		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
 		c.Next()
+		context.Clear(c.Request)
 	}
 }
 
