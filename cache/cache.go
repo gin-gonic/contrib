@@ -138,10 +138,11 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 		url := c.Request.URL
 		key := urlEscape(PageCachePrefix, url.RequestURI())
 		if err := store.Get(key, &cache); err != nil {
+			tempC := c.Copy()
 			// replace writer
-			writer := newCachedWriter(store, expire, c.Writer, key)
-			c.Writer = writer
-			handle(c)
+			writer := newCachedWriter(store, expire, tempC.Writer, key)
+			tempC.Writer = writer
+			handle(tempC)
 		} else {
 			c.Writer.WriteHeader(cache.status)
 			for k, vals := range cache.header {
