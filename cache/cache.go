@@ -147,7 +147,7 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 			c.Writer.WriteHeader(cache.status)
 			for k, vals := range cache.header {
 				for _, v := range vals {
-					c.Writer.Header().Add(k, v)
+					c.Writer.Header().Set(k, v)
 				}
 			}
 			c.Writer.Write(cache.data)
