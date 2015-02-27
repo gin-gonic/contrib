@@ -75,22 +75,24 @@ func (w *cachedWriter) WriteHeader(code int) {
 }
 
 func (w *cachedWriter) Status() int {
-	return w.status
+	return w.ResponseWriter.Status()
 }
 
 func (w *cachedWriter) Written() bool {
-	return w.written
+	return w.ResponseWriter.Written()
 }
 
 func (w *cachedWriter) Write(data []byte) (int, error) {
 	ret, err := w.ResponseWriter.Write(data)
-	if err == nil {
+	if err == nil && w.status < http.StatusBadRequest {
 		//cache response
 		store := w.store
+		newData := make([]byte, len(data))
+		copy(newData, data)
 		val := responseCache{
 			w.status,
 			w.Header(),
-			data,
+			newData,
 		}
 		err = store.Set(w.key, val, w.expire)
 		if err != nil {
@@ -144,7 +146,7 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 			c.Writer.WriteHeader(cache.status)
 			for k, vals := range cache.header {
 				for _, v := range vals {
-					c.Writer.Header().Add(k, v)
+					c.Writer.Header().Set(k, v)
 				}
 			}
 			c.Writer.Write(cache.data)
