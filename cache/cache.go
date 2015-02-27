@@ -87,10 +87,12 @@ func (w *cachedWriter) Write(data []byte) (int, error) {
 	if err == nil {
 		//cache response
 		store := w.store
+		newData := make([]byte, len(data))
+		copy(newData, data)
 		val := responseCache{
 			w.status,
 			w.Header(),
-			data,
+			newData,
 		}
 		err = store.Set(w.key, val, w.expire)
 		if err != nil {
