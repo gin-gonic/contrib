@@ -22,22 +22,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func setupYourAppLogging() {
-	go func() {
-		for _ = range time.Tick(1 * time.Second) {
-			glog.Flush()
-		}
-	}()
-}
-
 func main() {
 	parseFlags() // send flags to glog
-	setupYourAppLogging()
 	router := gin.New()
-    // curl http://localhost:8080/
-    // curl http://localhost:8080/ping
-    router.Use(ginglog.Logger(2 * time.Second))
+    router.Use(ginglog.Logger(3 * time.Second))
     //..
+    glog.Info("bootstrapped application")
     router.Run(":8080")
 }
 ```
