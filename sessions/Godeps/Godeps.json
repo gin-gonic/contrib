@@ -4,15 +4,15 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/boj/redistore",
-			"Rev": "d66284b75e77744a31341d0bd47c390c16fbc0bf"
+			"Rev": "0cd55584b172cefd31c4cb84e2904585d898c7b2"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
-			"Rev": "50e7e427300a7eeeb299a4cd5bc1ebfa04d48528"
+			"Rev": "ac0ad2fed865d40a0adc1ac3ccaadc3acff5db4b"
 		},
 		{
 			"ImportPath": "github.com/gorilla/sessions",
-			"Rev": "28f896870851935df0885fca3410114940d49e1b"
+			"Rev": "f61c3ec2cf65d69e7efedfd4d060fe128882c951"
 		}
 	]
 }
