@@ -29,3 +29,5 @@ install:
 # New Relic
   - go get github.com/yvasiyarov/go-metrics
   - go get github.com/yvasiyarov/gorelic
+# gomonitor
+  - go get gopkg.in/mcuadros/go-monitor.v1
