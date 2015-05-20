@@ -2,98 +2,61 @@ package gzip
 
 import (
 	"compress/gzip"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
 	testResponse = "Gzip Test Response "
 )
 
-func newServer(useGzip bool) *gin.Engine {
-	r := gin.Default()
-	if useGzip {
-		r.Use(Gzip(DefaultCompression))
-	}
-	r.GET("/", func(c *gin.Context) {
-		c.Writer.Header().Set(headerContentLength, strconv.Itoa(len(testResponse)))
+func newServer() *gin.Engine {
+	router := gin.Default()
+	router.Use(Gzip(DefaultCompression))
+	router.GET("/", func(c *gin.Context) {
+		c.Header("Content-Length", strconv.Itoa(len(testResponse)))
 		c.String(200, testResponse)
 	})
-	return r
+	return router
 }
 
 func TestGzip(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", nil)
-	req.Header.Add(headerAcceptEncoding, encodingGzip)
+	req.Header.Add("Accept-Encoding", "gzip")
 
 	w := httptest.NewRecorder()
-
-	r := newServer(true)
+	r := newServer()
 	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusOK {
-		t.Errorf("Status code should be %v, was %d. Location: %s", http.StatusOK, w.Code, w.HeaderMap.Get("Location"))
-	}
-
-	enc := w.Header().Get(headerContentEncoding)
-	if enc != encodingGzip {
-		t.Errorf("Error Header %s", enc)
-	}
-
-	enc = w.Header().Get(headerVary)
-	if enc != headerAcceptEncoding {
-		t.Errorf("Error Header %s", enc)
-	}
-
-	length := w.Header().Get(headerContentLength)
-	if length != "" {
-		t.Errorf("Error Header %s", length)
-	}
-
-	if w.Body.Len() == 19 {
-		t.Fail()
-	}
+	assert.Equal(t, w.Code, 200)
+	assert.Equal(t, w.Header().Get("Content-Encoding"), "gzip")
+	assert.Equal(t, w.Header().Get("Vary"), "Accept-Encoding")
+	assert.Equal(t, w.Header().Get("Content-Length"), "")
+	assert.NotEqual(t, w.Body.Len(), 19)
 
 	gr, err := gzip.NewReader(w.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.NoError(t, err)
 	defer gr.Close()
-	body, _ := ioutil.ReadAll(gr)
-	if string(body) != testResponse {
-		t.Fail()
-	}
 
+	body, _ := ioutil.ReadAll(gr)
+	assert.Equal(t, string(body), testResponse)
 }
 
 func TestNoGzip(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", nil)
-	req.Header.Add(headerAcceptEncoding, encodingGzip)
 
 	w := httptest.NewRecorder()
-
-	r := newServer(false)
+	r := newServer()
 	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusOK {
-		t.Errorf("Status code should be %v, was %d. Location: %s", http.StatusOK, w.Code, w.HeaderMap.Get("Location"))
-	}
-
-	enc := w.Header().Get(headerContentEncoding)
-	if enc != "" {
-		t.Errorf("Error Header %s", enc)
-	}
-
-	length := w.Header().Get(headerContentLength)
-	if length != "19" {
-		t.Errorf("Error Header %s", length)
-	}
-	if w.Body.String() != testResponse {
-		t.Fail()
-	}
-
+	assert.Equal(t, w.Code, 200)
+	assert.Equal(t, w.Header().Get("Content-Encoding"), "")
+	assert.Equal(t, w.Header().Get("Content-Length"), "19")
+	assert.Equal(t, w.Body.String(), testResponse)
 }
