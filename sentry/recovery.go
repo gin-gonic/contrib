@@ -3,13 +3,15 @@ package sentry
 import (
 	"errors"
 	"fmt"
-	"github.com/getsentry/raven-go"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"runtime/debug"
+
+	"github.com/getsentry/raven-go"
+	"github.com/gin-gonic/gin"
 )
 
 func Recovery(client *raven.Client, onlyCrashes bool) gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 		defer func() {
 			flags := map[string]string{
@@ -19,16 +21,22 @@ func Recovery(client *raven.Client, onlyCrashes bool) gin.HandlerFunc {
 				debug.PrintStack()
 				rvalStr := fmt.Sprint(rval)
 				packet := raven.NewPacket(rvalStr, raven.NewException(errors.New(rvalStr), raven.NewStacktrace(2, 3, nil)))
-				client.Capture(packet, flags)
-				c.Writer.WriteHeader(http.StatusInternalServerError)
+				client.Capture(packet, map[string]string{
+					"endpoint": c.Request.RequestURI,
+				})
+				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 			if !onlyCrashes {
 				for _, item := range c.Errors {
-					packet := raven.NewPacket(item.Err, &raven.Message{item.Err, []interface{}{item.Meta}})
+					packet := raven.NewPacket(item.Error.Error(), &raven.Message{
+						Message: item.Error.Error(),
+						Params:  []interface{}{item.Meta},
+					})
 					client.Capture(packet, flags)
 				}
 			}
 		}()
+
 		c.Next()
 	}
 }
