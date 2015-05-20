@@ -1,10 +1,11 @@
 package sessions
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
 )
 
 const (
@@ -59,7 +60,6 @@ func Sessions(name string, store Store) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
-		c.Next()
 	}
 }
 
