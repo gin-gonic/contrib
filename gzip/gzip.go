@@ -3,6 +3,7 @@ package gzip
 import (
 	"compress/gzip"
 	"net/http"
+	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -17,33 +18,47 @@ const (
 
 func Gzip(level int) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !clientAcceptGzip(c.Request) {
+		if !shouldCompress(c.Request) {
 			return
 		}
-
 		gz, err := gzip.NewWriterLevel(c.Writer, level)
 		if err != nil {
 			return
 		}
-		defer gz.Close()
+
 		c.Header("Content-Encoding", "gzip")
 		c.Header("Vary", "Accept-Encoding")
-
 		c.Writer = &gzipWriter{c.Writer, gz}
+		defer func() {
+			c.Header("Content-Length", "")
+			gz.Close()
+		}()
 		c.Next()
-		c.Header("Content-Length", "")
 	}
-}
-
-func clientAcceptGzip(req *http.Request) bool {
-	return strings.Contains(req.Header.Get("Accept-Encoding"), "gzip")
 }
 
 type gzipWriter struct {
 	gin.ResponseWriter
-	gzwriter *gzip.Writer
+	writer *gzip.Writer
 }
 
 func (g *gzipWriter) Write(data []byte) (int, error) {
-	return g.gzwriter.Write(data)
+	return g.writer.Write(data)
+}
+
+func shouldCompress(req *http.Request) bool {
+	if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
+		return false
+	}
+	extension := filepath.Ext(req.URL.Path)
+	if len(extension) < 4 { // fast path
+		return true
+	}
+
+	switch extension {
+	case ".png", ".gif", ".jpeg", ".jpg":
+		return false
+	default:
+		return true
+	}
 }

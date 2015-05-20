@@ -48,6 +48,25 @@ func TestGzip(t *testing.T) {
 	assert.Equal(t, string(body), testResponse)
 }
 
+func TestGzipPNG(t *testing.T) {
+	req, _ := http.NewRequest("GET", "/image.png", nil)
+	req.Header.Add("Accept-Encoding", "gzip")
+
+	router := gin.New()
+	router.Use(Gzip(DefaultCompression))
+	router.GET("/image.png", func(c *gin.Context) {
+		c.String(200, "this is a PNG!")
+	})
+
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, w.Code, 200)
+	assert.Equal(t, w.Header().Get("Content-Encoding"), "")
+	assert.Equal(t, w.Header().Get("Vary"), "")
+	assert.Equal(t, w.Body.String(), "this is a PNG!")
+}
+
 func TestNoGzip(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", nil)
 
