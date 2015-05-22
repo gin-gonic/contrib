@@ -1,15 +1,15 @@
 package main
 
 import (
-  "github.com/ChristopherRabotin/gin-contrib/signedauth"
-  "net/http"
-  "time"
-  "crypto/md5"
+	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
+	"github.com/ChristopherRabotin/gin-contrib/signedauth"
 	"hash"
 	"io/ioutil"
+	"net/http"
+	"time"
 )
 
 // StrictSHA1Manager is an example definition of an AuthKeyManager struct.
