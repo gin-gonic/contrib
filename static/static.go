@@ -1,12 +1,13 @@
 package static
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ServeFileSystem interface {

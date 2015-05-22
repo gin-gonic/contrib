@@ -13,7 +13,7 @@ func Auth(secret string) gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.Fail(401, err)
+			c.AbortWithError(401, err)
 		}
 	}
 }

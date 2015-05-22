@@ -1,10 +1,11 @@
 package newrelic
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	metrics "github.com/yvasiyarov/go-metrics"
 	"github.com/yvasiyarov/gorelic"
-	"time"
 )
 
 var agent *gorelic.Agent

@@ -2,9 +2,10 @@ package secure
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -170,10 +171,8 @@ func Secure(options Options) gin.HandlerFunc {
 			if c.Writer.Written() {
 				c.AbortWithStatus(c.Writer.Status())
 			} else {
-				c.Fail(http.StatusInternalServerError, err)
+				c.AbortWithError(http.StatusInternalServerError, err)
 			}
-		} else {
-			c.Next()
 		}
 	}
 

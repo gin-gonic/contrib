@@ -62,7 +62,7 @@ func Sessions(name string, store Store) gin.HandlerFunc {
 		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
 		defer context.Clear(c.Request)
-		c.Next()		
+		c.Next()
 	}
 }
 
