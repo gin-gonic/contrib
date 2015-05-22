@@ -1,31 +1,8 @@
 language: go
 go:
-  - 1.3
   - 1.4
+  - 1.4.2
   - tip
 services:
   - memcache
   - redis-server
-install:
-# Gin Framework
-  - go get github.com/gin-gonic/gin
-  - cd $HOME/gopath/src/github.com/gin-gonic/gin
-  - git checkout develop
-  - go install
-  - cd $HOME/gopath/src/github.com/gin-gonic/contrib
-# Sentry
-  - go get github.com/getsentry/raven-go
-# Cache
-  - go get github.com/robfig/go-cache
-  - go get github.com/garyburd/redigo/redis
-  - go get github.com/bradfitz/gomemcache/memcache
-# JWT
-  - go get github.com/dgrijalva/jwt-go
-# Sessions
-  - go get github.com/gorilla/sessions
-  - go get github.com/boj/redistore
-# Static
-  - go get github.com/elazarl/go-bindata-assetfs
-# New Relic
-  - go get github.com/yvasiyarov/go-metrics
-  - go get github.com/yvasiyarov/gorelic
