@@ -21,10 +21,11 @@ import (
 
 // StrictSHA1Manager is an example definition of an AuthKeyManager struct.
 type StrictSHA1Manager struct {
-	prefix string
-	secret string
-	key    string
-	value  interface{}
+	required bool
+	prefix   string
+	secret   string
+	key      string
+	value    interface{}
 }
 
 // AuthHeaderPrefix returns the prefix used in the initialization.
@@ -74,7 +75,7 @@ func (mgr StrictSHA1Manager) ContextValue(access string) interface{} {
 
 // AuthHeaderRequired returns true because we want to forbid any non-signed request in this group.
 func (mgr StrictSHA1Manager) AuthHeaderRequired() bool {
-	return true
+	return mgr.required
 }
 
 // HashFunction returns sha1.New. It could return sha512.New384 for example (SHA-1 has known theoretical attacks).
@@ -111,7 +112,7 @@ func (mgr StrictSHA1Manager) DataToSign(req *http.Request) (string, *Error) {
 func TestExtractAuthInfo(t *testing.T) {
 	// https://github.com/smartystreets/goconvey/wiki#get-going-in-25-seconds
 	Convey("Given a static manager with prefix SAUTH", t, func() {
-		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil}
+		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil, required: true}
 
 		Convey("When the header has an incorrect prefix", func() {
 			accesskey, signature, err := extractAuthInfo(mgr, "INCORRECT Something:ThereWasASpace")
@@ -166,7 +167,7 @@ func TestExtractAuthInfo(t *testing.T) {
 func TestMiddleware(t *testing.T) {
 
 	Convey("Given a strict manager", t, func() {
-		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil}
+		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil, required: true}
 		router := gin.Default()
 		router.Use(SignatureAuth(mgr))
 		methods := []string{"GET", "POST", "PUT", "DELETE", "PATCH"}
@@ -309,6 +310,28 @@ func TestMiddleware(t *testing.T) {
 				})
 			}
 		})
+
+	})
+
+	Convey("Given a non required manager", t, func() {
+		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil, required: false}
+		router := gin.Default()
+		router.Use(SignatureAuth(mgr))
+		methods := []string{"GET", "POST", "PUT", "DELETE", "PATCH"}
+		for _, meth := range methods {
+			router.Handle(meth, "/test/", []gin.HandlerFunc{func(c *gin.Context) {
+				c.String(http.StatusOK, "Success.")
+			}})
+		}
+
+		for _, meth := range methods {
+			Convey(fmt.Sprintf("and doing a %s request", meth), func() {
+				req := performRequest(router, meth, "/test/", nil, nil)
+				Convey("the middleware should respond success", func() {
+					So(req.Code, ShouldEqual, 200)
+				})
+			})
+		}
 
 	})
 }
