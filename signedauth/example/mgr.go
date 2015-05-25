@@ -5,7 +5,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
-	"github.com/ChristopherRabotin/gin-contrib/signedauth"
+	"github.com/gin-gonic/gin-contrib/signedauth"
 	"hash"
 	"io/ioutil"
 	"net/http"
