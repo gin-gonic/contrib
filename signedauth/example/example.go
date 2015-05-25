@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin-contrib/signedauth"
+	"github.com/gin-gonic/contrib/signedauth"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
