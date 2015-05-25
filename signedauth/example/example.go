@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ChristopherRabotin/gin-contrib/signedauth"
+	"github.com/gin-gonic/gin-contrib/signedauth"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -11,10 +11,10 @@ func main() {
 	router := gin.Default()
 	router.Use(signedauth.SignatureAuth(mgr))
 	router.POST("/test/", func(c *gin.Context) {
-			c.String(http.StatusOK, "Success.")
-		})
+		c.String(http.StatusOK, "Success.")
+	})
 	router.PUT("/test/", func(c *gin.Context) {
-			c.String(http.StatusOK, "Success.")
-		})
+		c.String(http.StatusOK, "Success.")
+	})
 	router.Run("localhost:31337")
 }
