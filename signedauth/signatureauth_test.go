@@ -171,10 +171,13 @@ func TestMiddleware(t *testing.T) {
 		router := gin.Default()
 		router.Use(SignatureAuth(mgr))
 		methods := []string{"GET", "POST", "PUT", "DELETE", "PATCH"}
+		/*router.GET("/test/", func(c *gin.Context) {
+				c.String(http.StatusOK, "Success.")
+			})*/
 		for _, meth := range methods {
 			router.Handle(meth, "/test/", []gin.HandlerFunc{func(c *gin.Context) {
 				c.String(http.StatusOK, "Success.")
-			}})
+			}}[0])
 		}
 		Convey("When there is no header", func() {
 			for _, meth := range methods {
@@ -321,7 +324,7 @@ func TestMiddleware(t *testing.T) {
 		for _, meth := range methods {
 			router.Handle(meth, "/test/", []gin.HandlerFunc{func(c *gin.Context) {
 				c.String(http.StatusOK, "Success.")
-			}})
+			}}[0])
 		}
 
 		for _, meth := range methods {
