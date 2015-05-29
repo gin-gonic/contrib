@@ -27,17 +27,18 @@ var (
 )
 
 func ErrorLogger() gin.HandlerFunc {
-	return ErrorLoggerT(gin.ErrorTypeAll)
+	return ErrorLoggerT(gin.ErrorTypeAny)
 }
 
-func ErrorLoggerT(typ uint32) gin.HandlerFunc {
+func ErrorLoggerT(typ gin.ErrorType) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 
-		errs := c.Errors.ByType(typ)
-		if len(errs) > 0 {
-			// -1 status code = do not change current one
-			c.JSON(-1, c.Errors)
+		if !c.Writer.Written() {
+			json := c.Errors.ByType(typ).JSON()
+			if json != nil {
+				c.JSON(-1, json)
+			}
 		}
 	}
 }
