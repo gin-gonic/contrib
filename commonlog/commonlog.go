@@ -49,7 +49,7 @@ func NewWithWriter(out io.Writer) gin.HandlerFunc {
 		w.WriteString(strconv.Itoa(c.Writer.Size()))
 		w.WriteString("\n")
 
-		io.Copy(out, w)
+		w.WriteTo(out)
 		pool.Put(w)
 	}
 }
