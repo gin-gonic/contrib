@@ -15,18 +15,20 @@ Start your webapp to log to STDERR and /tmp:
 package main
 
 import (
+    "flag
     "time"
 
-    "github.com/golang/glog" // needed if you use glog for your app logging
+    "github.com/golang/glog"
     "github.com/gin-gonic/contrib/ginglog"
-	"github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin"
 )
 
 func main() {
-	parseFlags() // send flags to glog
-	router := gin.New()
+    flag.Parse()
+    router := gin.New()
     router.Use(ginglog.Logger(3 * time.Second))
     //..
+    router.Use(gin.Recovery())
     glog.Info("bootstrapped application")
     router.Run(":8080")
 }
