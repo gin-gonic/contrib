@@ -6,19 +6,19 @@ import (
 	"github.com/gin-gonic/gin/render"
 )
 
-type htmlRender struct {
+type Render struct {
 	templates map[string]*template.Template
 }
 
-var _ render.HTMLRender = &htmlRender{}
+var _ render.HTMLRender = &Render{}
 
-func New() *htmlRender {
-	return &htmlRender{
+func New() *Render {
+	return &Render{
 		templates: make(map[string]*template.Template),
 	}
 }
 
-func (r *htmlRender) Add(name string, tmpl *template.Template) {
+func (r *Render) Add(name string, tmpl *template.Template) {
 	if tmpl == nil {
 		panic("template can not be nil")
 	}
@@ -28,25 +28,25 @@ func (r *htmlRender) Add(name string, tmpl *template.Template) {
 	r.templates[name] = tmpl
 }
 
-func (r *htmlRender) AddFromFiles(name string, files ...string) *template.Template {
+func (r *Render) AddFromFiles(name string, files ...string) *template.Template {
 	tmpl := template.Must(template.ParseFiles(files...))
 	r.Add(name, tmpl)
 	return tmpl
 }
 
-func (r *htmlRender) AddFromGlob(name, glob string) *template.Template {
+func (r *Render) AddFromGlob(name, glob string) *template.Template {
 	tmpl := template.Must(template.ParseGlob(glob))
 	r.Add(name, tmpl)
 	return tmpl
 }
 
-func (r *htmlRender) AddFromString(name, templateString string) *template.Template {
+func (r *Render) AddFromString(name, templateString string) *template.Template {
 	tmpl := template.Must(template.New("").Parse(templateString))
 	r.Add(name, tmpl)
 	return tmpl
 }
 
-func (r *htmlRender) Instance(name string, data interface{}) render.Render {
+func (r *Render) Instance(name string, data interface{}) render.Render {
 	return render.HTML{
 		Template: r.templates[name],
 		Data:     data,
