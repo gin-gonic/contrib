@@ -47,6 +47,10 @@ func NewRedisCache(host string, password string, defaultExpiration time.Duration
 	return &RedisStore{pool, defaultExpiration}
 }
 
+func NewRedisCacheWithPool(pool *redis.Pool, defaultExpiration time.Duration) *RedisStore {
+	return &RedisStore{pool, defaultExpiration}
+}
+
 func (c *RedisStore) Set(key string, value interface{}, expires time.Duration) error {
 	return c.invoke(c.pool.Get().Do, key, value, expires)
 }
