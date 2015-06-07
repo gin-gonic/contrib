@@ -36,9 +36,9 @@ type CacheStore interface {
 }
 
 type responseCache struct {
-	status int
-	header http.Header
-	data   []byte
+	Status int
+	Header http.Header
+	Data   []byte
 }
 
 type cachedWriter struct {
@@ -117,13 +117,13 @@ func SiteCache(store CacheStore, expire time.Duration) gin.HandlerFunc {
 		if err := store.Get(key, &cache); err != nil {
 			c.Next()
 		} else {
-			c.Writer.WriteHeader(cache.status)
-			for k, vals := range cache.header {
+			c.Writer.WriteHeader(cache.Status)
+			for k, vals := range cache.Header {
 				for _, v := range vals {
 					c.Writer.Header().Add(k, v)
 				}
 			}
-			c.Writer.Write(cache.data)
+			c.Writer.Write(cache.Data)
 		}
 	}
 }
@@ -141,13 +141,13 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 			c.Writer = writer
 			handle(c)
 		} else {
-			c.Writer.WriteHeader(cache.status)
-			for k, vals := range cache.header {
+			c.Writer.WriteHeader(cache.Status)
+			for k, vals := range cache.Header {
 				for _, v := range vals {
 					c.Writer.Header().Add(k, v)
 				}
 			}
-			c.Writer.Write(cache.data)
+			c.Writer.Write(cache.Data)
 		}
 	}
 }
