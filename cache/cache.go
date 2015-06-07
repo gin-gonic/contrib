@@ -65,7 +65,7 @@ func urlEscape(prefix string, u string) string {
 }
 
 func newCachedWriter(store CacheStore, expire time.Duration, writer gin.ResponseWriter, key string) *cachedWriter {
-	return &cachedWriter{writer, 0, false, store, expire, key}
+	return &cachedWriter{writer, http.StatusOK, false, store, expire, key}
 }
 
 func (w *cachedWriter) WriteHeader(code int) {
