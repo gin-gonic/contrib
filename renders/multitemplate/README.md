@@ -2,6 +2,8 @@ This is a custom HTML render to support multi templates, ie. more than one `*tem
 
 
 
+#Simple example
+
 ```go
 package main
 
@@ -31,3 +33,52 @@ func createMyRender() multitemplate.Render {
     return r
 }
 ```
+
+##Advanced example
+
+[https://elithrar.github.io/article/approximating-html-template-inheritance/](https://elithrar.github.io/article/approximating-html-template-inheritance/)
+
+```go
+package main
+
+import (
+	"html/template"
+	"path/filepath"
+
+	"github.com/gin-gonic/contrib/renders/multitemplate"
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	router := gin.Default()
+	router.HTMLRender = loadTemplates("./templates")
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.tmpl", gin.H{
+			"title": "Welcome!",
+		})
+	})
+	router.Run(":8080")
+}
+
+func loadTemplates(templatesDir string) *multitemplate.Render {
+	r := multitemplate.New()
+
+	layouts, err := filepath.Glob(templatesDir + "layouts/*.tmpl")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	includes, err := filepath.Glob(templatesDir + "includes/*.tmpl")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// Generate our templates map from our layouts/ and includes/ directories
+	for _, layout := range layouts {
+		files := append(includes, layout)
+		r.Add(filepath.Base(layout), template.Must(template.ParseFiles(files...)))
+	}
+	return r
+}
+```
+
