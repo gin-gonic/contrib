@@ -60,7 +60,7 @@ func main() {
 	router.Run(":8080")
 }
 
-func loadTemplates(templatesDir string) *multitemplate.Render {
+func loadTemplates(templatesDir string) multitemplate.Render {
 	r := multitemplate.New()
 
 	layouts, err := filepath.Glob(templatesDir + "layouts/*.tmpl")
