@@ -32,8 +32,7 @@ func Auth(secret string, alg string) gin.HandlerFunc {
 			c.AbortWithError(401, err)
 		}
 		if !token.Valid {
-			c.Fail(401, errors.New("Invalid Token"))
+			c.AbortWithError(401, fmt.Errorf("Invalid Token"))
 		}
 	}
 }
-
