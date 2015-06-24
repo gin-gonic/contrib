@@ -9,7 +9,7 @@ import (
 
 func Auth(secret string, alg string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) (interface{}, error) {
+		jwtoken, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) (interface{}, error) {
 
 			switch alg {
 			case "HS256", "HS384", "HS512":
@@ -30,9 +30,12 @@ func Auth(secret string, alg string) gin.HandlerFunc {
 
 		if err != nil {
 			c.AbortWithError(401, err)
-		}
-		if !token.Valid {
+		} else if !jwtoken.Valid {
 			c.AbortWithError(401, fmt.Errorf("Invalid Token"))
 		}
+
+		//set it to context to use the info it contains in handlers
+		c.Set("jwt", jwtoken)
 	}
 }
+
