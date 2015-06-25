@@ -51,7 +51,8 @@ func TestResourcer(t *testing.T) {
 	group.Use(ResourcerGorm(&GormResourcer{}, &db))
 	group.GET("/:user_id", func(c *gin.Context) {
 		called = true
-		assert.NotNil(t, c.Resource)
+		_, ok := c.Get("gin.contrib.resource")
+		assert.True(t, ok)
 	})
 
 	w := httptest.NewRecorder()
@@ -77,7 +78,8 @@ func TestCollectioner(t *testing.T) {
 	group.Use(ResourcerGorm(&GormCollectioner{}, &db))
 	group.GET("/photos", func(c *gin.Context) {
 		called = true
-		assert.NotNil(t, c.Resource)
+		_, ok := c.Get("gin.contrib.resource")
+		assert.True(t, ok)
 	})
 
 	w := httptest.NewRecorder()

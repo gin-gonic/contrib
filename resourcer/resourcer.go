@@ -61,17 +61,10 @@ func ResourcerGorm(h GormHandlers, db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Gets resource and sets it into Context
 		res, err := h.Resource(h, db, c.Params)
-
 		if err != nil {
-			if gin.IsDebugging() {
-				c.AbortWithError(404, err)
-			} else {
-				c.AbortWithStatus(404)
-			}
+			c.AbortWithError(404, err)
+			return
 		}
-		c.Resource = res
-		// Before request
-		c.Next()
-		// After request
+		c.Set("gin.contrib.resource", res)
 	}
 }
