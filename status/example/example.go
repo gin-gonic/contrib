@@ -15,7 +15,10 @@ func main() {
 	statusMw = &status.StatusMiddleware{}
 	r.Use(statusMw.Status())
 
-	r.GET("/.status", Status)
+	r.GET("/.status", func(c *gin.Context) {
+		c.JSON(200, statusMw.GetStatus())
+	})
+
 	r.GET("/fail", func(c *gin.Context) {
 		c.JSON(http.StatusNotImplemented, gin.H{"message": "Hello World"})
 	})
@@ -33,8 +36,4 @@ func main() {
 	})
 
 	r.Run("localhost:8080")
-}
-
-func Status(c *gin.Context) {
-	c.JSON(200, statusMw.GetStatus())
 }
