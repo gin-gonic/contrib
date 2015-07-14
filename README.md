@@ -12,6 +12,10 @@ If adding a link to your own repository, please follow this example:
 Each author is responsible of maintaining his own code, although if you submit as a package, you allow the community to fix it. You can also submit a pull request to fix an existing package.
 
 ======
+## Proposed Middleware
++ [go-contrib-mobile](https://github.com/floresj/go-contrib-mobile)
+
+======
 ## List of external middleware
 
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
