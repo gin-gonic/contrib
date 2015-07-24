@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil}
+	mgr := StrictSHA1Manager{Prefix: "SAUTH", Key: "contextKey", Secret: "super-secret-password", Value: nil}
 	router := gin.Default()
 	router.Use(signedauth.SignatureAuth(mgr))
 	router.POST("/test/", func(c *gin.Context) {

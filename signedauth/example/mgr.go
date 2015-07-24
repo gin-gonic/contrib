@@ -14,15 +14,15 @@ import (
 
 // StrictSHA1Manager is an example definition of an AuthKeyManager struct.
 type StrictSHA1Manager struct {
-	prefix string
-	secret string
-	key    string
-	value  interface{}
+	Prefix string
+	Secret string
+	Key    string
+	Value  interface{}
 }
 
 // AuthHeaderPrefix returns the prefix used in the initialization.
 func (mgr StrictSHA1Manager) AuthHeaderPrefix() string {
-	return mgr.prefix
+	return mgr.Prefix
 }
 
 // SecretKey returns the secret key from the provided access key.
@@ -47,14 +47,14 @@ func (mgr StrictSHA1Manager) SecretKey(access string, req *http.Request) (string
 	// If the reading the access key requires any kind of IO (database, or file reading, etc.)
 	// it's quite good to only verify if that access key is valid once all the checks are done.
 	if access == "my_access_key" {
-		return mgr.secret, nil
+		return mgr.Secret, nil
 	}
 	return "", &signedauth.Error{418, errors.New("You are a teapot.")}
 }
 
 // ContextKey returns the key which will store the return from ContextValue() in Gin's context.
 func (mgr StrictSHA1Manager) ContextKey() string {
-	return mgr.key
+	return mgr.Key
 }
 
 // ContextValue returns the value to store in Gin's context at ContextKey().

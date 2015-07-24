@@ -21,16 +21,16 @@ import (
 
 // StrictSHA1Manager is an example definition of an AuthKeyManager struct.
 type StrictSHA1Manager struct {
-	required bool
-	prefix   string
-	secret   string
-	key      string
-	value    interface{}
+	Required bool
+	Prefix   string
+	Secret   string
+	Key      string
+	Value    interface{}
 }
 
 // AuthHeaderPrefix returns the prefix used in the initialization.
 func (mgr StrictSHA1Manager) AuthHeaderPrefix() string {
-	return mgr.prefix
+	return mgr.Prefix
 }
 
 // SecretKey returns the secret key from the provided access key.
@@ -55,14 +55,14 @@ func (mgr StrictSHA1Manager) SecretKey(access string, req *http.Request) (string
 	// If the reading the access key requires any kind of IO (database, or file reading, etc.)
 	// it's quite good to only verify if that access key is valid once all the checks are done.
 	if access == "my_access_key" {
-		return mgr.secret, nil
+		return mgr.Secret, nil
 	}
 	return "", &Error{418, errors.New("You are a teapot.")}
 }
 
 // ContextKey returns the key which will store the return from ContextValue() in Gin's context.
 func (mgr StrictSHA1Manager) ContextKey() string {
-	return mgr.key
+	return mgr.Key
 }
 
 // ContextValue returns the value to store in Gin's context at ContextKey().
@@ -75,7 +75,7 @@ func (mgr StrictSHA1Manager) ContextValue(access string) interface{} {
 
 // AuthHeaderRequired returns true because we want to forbid any non-signed request in this group.
 func (mgr StrictSHA1Manager) AuthHeaderRequired() bool {
-	return mgr.required
+	return mgr.Required
 }
 
 // HashFunction returns sha1.New. It could return sha512.New384 for example (SHA-1 has known theoretical attacks).
@@ -112,7 +112,7 @@ func (mgr StrictSHA1Manager) DataToSign(req *http.Request) (string, *Error) {
 func TestExtractAuthInfo(t *testing.T) {
 	// https://github.com/smartystreets/goconvey/wiki#get-going-in-25-seconds
 	Convey("Given a static manager with prefix SAUTH", t, func() {
-		mgr := StrictSHA1Manager{prefix: "SAUTH", key: "contextKey", secret: "super-secret-password", value: nil, required: true}
+		mgr := StrictSHA1Manager{Prefix: "SAUTH", Key: "contextKey", Secret: "super-secret-password", Value: nil, Required: true}
 
 		Convey("When the header has an incorrect prefix", func() {
 			accesskey, signature, err := extractAuthInfo(mgr, "INCORRECT Something:ThereWasASpace")
@@ -276,7 +276,7 @@ func TestMiddleware(t *testing.T) {
 			for _, meth := range methods {
 				Convey(fmt.Sprintf("and doing a %s request", meth), func() {
 					sig_data := meth + "\n\n" + now
-					hash := hmac.New(sha1.New, []byte(mgr.secret))
+					hash := hmac.New(sha1.New, []byte(mgr.Secret))
 					hash.Write([]byte(sig_data))
 					signature := hex.EncodeToString(hash.Sum(nil))
 					headers["Authorization"] = []string{"SAUTH my_access_key:" + signature}
