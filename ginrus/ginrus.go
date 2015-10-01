@@ -18,7 +18,7 @@ import (
 // It receives:
 //   1. A time package format string (e.g. time.RFC3339).
 //   2. A boolean stating whether to use UTC time zone or local.
-func Ginrus(logger *logrus.Logger, timeFormat string, utc bool) gin.HandlerFunc {
+func Ginrus(logger *logrus.Entry, timeFormat string, utc bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 		// some evil middlewares modify this values
