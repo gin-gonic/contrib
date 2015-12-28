@@ -46,6 +46,10 @@ func (g *gzipWriter) Write(data []byte) (int, error) {
 	return g.writer.Write(data)
 }
 
+func (g *gzipWriter) WriteString(s string) (n int, err error) {
+	return g.writer.Write([]byte(s))
+}
+
 func shouldCompress(req *http.Request) bool {
 	if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
 		return false
