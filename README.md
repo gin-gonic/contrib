@@ -18,3 +18,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-csrf](https://github.com/utrack/gin-csrf) - CSRF protection
 + [gin-health](https://github.com/utrack/gin-health) - middleware that simplifies stat reporting via [gocraft/health](https://github.com/gocraft/health)
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
++ [gin-revision](https://github.com/appleboy/gin-revision-middleware/) - Revision middleware for Gin framework
