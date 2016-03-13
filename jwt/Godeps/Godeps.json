@@ -1,22 +1,31 @@
 {
-	"ImportPath": "github.com/gin-gonic/contrib/jwt",
-	"GoVersion": "go1.3",
+	"ImportPath": "github.com/itzamna314/contrib/jwt",
+	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
-			"Rev": "5ca80149b9d3f8b863af0e2bb6742e608603bd99"
+			"Rev": "9a4b9f2ac1f7685147a5c01544e3b922dbc1f4a0"
 		},
 		{
 			"ImportPath": "github.com/gin-gonic/gin",
-			"Rev": "ac0ad2fed865d40a0adc1ac3ccaadc3acff5db4b"
+			"Rev": "31e4401f017591d5e03bdd883449b6e80a305227"
 		},
 		{
-			"ImportPath": "github.com/jacobsa/oglematchers",
-			"Rev": "3ecefc49db07722beca986d9bb71ddd026b133f0"
+			"ImportPath": "github.com/golang/protobuf/proto",
+			"Rev": "0fd8c908d872c921af513ef5091964bbd2e0d904"
 		},
 		{
-			"ImportPath": "github.com/smartystreets/goconvey/convey",
-			"Rev": "958443eebb772fc6c1dcc2a44cdc6a59e1b3ff0d"
+			"ImportPath": "github.com/manucorporat/sse",
+			"Rev": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "e7da8edaa52631091740908acaf2c2d4c9b3ce90"
+		},
+		{
+			"ImportPath": "gopkg.in/go-playground/validator.v8",
+			"Comment": "v8.17.1",
+			"Rev": "014792cf3e266caff1e916876be12282b33059e0"
 		}
 	]
 }
