@@ -27,5 +27,6 @@ func Auth(secret string, method jwt.SigningMethod) gin.HandlerFunc {
 		}
 
 		c.Set("claims", token.Claims)
+		c.Next()
 	}
 }
