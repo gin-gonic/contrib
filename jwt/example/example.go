@@ -7,8 +7,12 @@ import (
 	"time"
 )
 
-var (
+const (
 	mysupersecretpassword = "unicornsAreAwesome"
+)
+
+var (
+	method = jwt_lib.SigningMethodHS256
 )
 
 func main() {
@@ -18,7 +22,6 @@ func main() {
 
 	public.GET("/", func(c *gin.Context) {
 		// Create the token
-		method := jwt_lib.GetSigningMethod("HS256")
 		token := jwt_lib.New(method)
 		// Set some claims
 		token.Claims["ID"] = "Christopher"
