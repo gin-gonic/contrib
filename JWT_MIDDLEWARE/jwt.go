@@ -82,6 +82,7 @@ func (mw *JWTMiddleware) MiddlewareFunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		mw.middlewareImpl(c)
+		return
 	}
 }
 
@@ -172,5 +173,7 @@ func (mw *JWTMiddleware) unauthorized(c *gin.Context) {
 	c.Request.Header.Set("WWW-Authenticate", "JWT realm="+mw.Realm)
 
 	c.JSON(401, gin.H{"userMessege": "Not Authorized"})
+	c.Abort()
+	return
 	// rest.Error(writer, "Not Authorized", http.StatusUnauthorized)
 }

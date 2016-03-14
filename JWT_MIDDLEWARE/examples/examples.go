@@ -1,8 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/contrib/JWT_MIDDLEWARE"
+	"fmt"
+	"github.com/akshaykumar12527/contrib/JWT_MIDDLEWARE"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func main() {
@@ -19,8 +21,9 @@ func main() {
 
 	// This handler will match /user/john but will not match neither /user/ or /user
 	router.GET("/user", jwt_middleware.MiddlewareFunc(), func(c *gin.Context) {
-
+		fmt.Println("/user")
 		c.JSON(200, gin.H{"message": "success"})
+		return
 	})
 
 	// However, this one will match /user/john/ and also /user/john/send
