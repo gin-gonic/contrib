@@ -30,7 +30,7 @@ func Gzip(level int) gin.HandlerFunc {
 		c.Header("Vary", "Accept-Encoding")
 		c.Writer = &gzipWriter{c.Writer, gz}
 		defer func() {
-			c.Header("Content-Length", "")
+			c.Header("Content-Length", "0")
 			gz.Close()
 		}()
 		c.Next()
