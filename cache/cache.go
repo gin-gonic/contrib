@@ -101,11 +101,15 @@ func (w *cachedWriter) Write(data []byte) (int, error) {
 }
 
 // Cache Middleware
-func Cache(store *CacheStore) gin.HandlerFunc {
+func Cache(store CacheStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set(CACHE_MIDDLEWARE_KEY, store)
 		c.Next()
 	}
+}
+
+func MustGetCache(c *gin.Context) CacheStore {
+	return c.MustGet(CACHE_MIDDLEWARE_KEY).(CacheStore)
 }
 
 func SiteCache(store CacheStore, expire time.Duration) gin.HandlerFunc {
