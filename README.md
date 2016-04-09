@@ -20,3 +20,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
 + [gin-revision](https://github.com/appleboy/gin-revision-middleware) - Revision middleware for Gin framework
 + [gin-jwt](https://github.com/appleboy/gin-jwt) - JWT Middleware for Gin Framework
++ [gin-sessions](https://github.com/kimiazhu/ginweb-contrib/tree/master/sessions) - session middleware based on mongodb and mysql
