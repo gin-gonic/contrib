@@ -2,7 +2,7 @@
 
 ## RateLimiter
 
-## Example:
+### Example:
 
     package main
 
