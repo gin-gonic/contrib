@@ -1,0 +1,24 @@
+// Test server code
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/contrib/limits"
+	"github.com/gin-gonic/gin"
+)
+
+func handler(ctx *gin.Context) {
+	val := ctx.PostForm("b")
+	if len(ctx.Errors) > 0 {
+		return
+	}
+	ctx.String(http.StatusOK, val)
+}
+
+func main() {
+	rtr := gin.Default()
+        rtr.Use(limits.RateLimiter({{.Size}}))
+	rtr.POST("/", handler)
+        rtr.Run(":{{.Port}}")
+}
