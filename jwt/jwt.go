@@ -12,6 +12,7 @@ func Auth(secret string) gin.HandlerFunc {
 			return b, nil
 		})
 
+		// Put claims into context so that handlers can use info such as userId
 		c.Set("token-claims", token.Claims)
 
 		if err != nil {
