@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"time"
 
@@ -26,7 +25,7 @@ func main() {
 	//   - Local time zone instead of UTC.
 	logger := logrus.New()
 	logger.Level = logrus.ErrorLevel
-	logger.SetOutput(os.Stderr)
+	logger.Out = os.Stderr
 	r.Use(ginrus.Ginrus(logger, time.RFC3339, false))
 
 	// Example ping request.
