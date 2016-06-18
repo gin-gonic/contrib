@@ -25,3 +25,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-sessions](https://github.com/kimiazhu/ginweb-contrib/tree/master/sessions) - session middleware based on mongodb and mysql
 + [gin-location](https://github.com/drone/gin-location) - middleware for exposing the server's hostname and scheme
 + [gin-nice-recovery](https://github.com/ekyoung/gin-nice-recovery) - panic recovery middleware that let's you build a nicer user experience
++ [gin-limit](https://github.com/aviddiviner/gin-limit) - limits simultaneous requests; can help with high traffic load
