@@ -28,10 +28,12 @@ func Recovery(client *raven.Client, onlyCrashes bool) gin.HandlerFunc {
 			}
 			if !onlyCrashes {
 				for _, item := range c.Errors {
-					packet := raven.NewPacket(item.Error(), &raven.Message{
-						Message: item.Error(),
-						Params:  []interface{}{item.Meta},
-					})
+					packet := raven.NewPacket(item.Error(),
+						&raven.Message{
+							Message: item.Error(),
+							Params:  []interface{}{item.Meta},
+						},
+						raven.NewHttp(c.Request))
 					client.Capture(packet, flags)
 				}
 			}
