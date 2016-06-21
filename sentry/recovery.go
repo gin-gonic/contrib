@@ -21,9 +21,7 @@ func Recovery(client *raven.Client, onlyCrashes bool) gin.HandlerFunc {
 				debug.PrintStack()
 				rvalStr := fmt.Sprint(rval)
 				packet := raven.NewPacket(rvalStr, raven.NewException(errors.New(rvalStr), raven.NewStacktrace(2, 3, nil)))
-				client.Capture(packet, map[string]string{
-					"endpoint": c.Request.RequestURI,
-				})
+				client.Capture(packet, flags)
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 			if !onlyCrashes {
