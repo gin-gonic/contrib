@@ -30,7 +30,6 @@ func Gzip(level int) gin.HandlerFunc {
 		c.Header("Vary", "Accept-Encoding")
 		c.Writer = &gzipWriter{c.Writer, gz}
 		defer func() {
-			c.Header("Content-Length", "")
 			gz.Close()
 		}()
 		c.Next()
@@ -44,6 +43,11 @@ type gzipWriter struct {
 
 func (g *gzipWriter) Write(data []byte) (int, error) {
 	return g.writer.Write(data)
+}
+
+func (g *gzipWriter) WriteHeader(code int) {
+	g.ResponseWriter.Header().Del("Content-Length")
+	g.ResponseWriter.WriteHeader(code)
 }
 
 func shouldCompress(req *http.Request) bool {
