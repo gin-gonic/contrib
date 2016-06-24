@@ -1,0 +1,8 @@
+apiversion: v2
+kind: package
+name: github.com/Synthace/gin-contrib
+version: 0.0.1
+modules:
+  golang:
+    testpackages:
+    - ~vendor
