@@ -26,3 +26,6 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-location](https://github.com/drone/gin-location) - middleware for exposing the server's hostname and scheme
 + [gin-nice-recovery](https://github.com/ekyoung/gin-nice-recovery) - panic recovery middleware that let's you build a nicer user experience
 + [gin-limit](https://github.com/aviddiviner/gin-limit) - limits simultaneous requests; can help with high traffic load
++ [gin-glog](https://github.com/zalando/gin-glog) - meant as drop-in replacement for Gin's default logger
++ [gin-gomonitor](https://github.com/zalando/gin-gomonitor) - for exposing metrics with Go-Monitor
++ [gin-oauth2](https://github.com/zalando/gin-oauth2) - for working with OAuth2
