@@ -2,9 +2,11 @@ package gzip
 
 import (
 	"compress/gzip"
+	"io/ioutil"
 	"net/http"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,14 +19,23 @@ const (
 )
 
 func Gzip(level int) gin.HandlerFunc {
+	var gzPool sync.Pool
+	gzPool.New = func() interface{} {
+		gz, err := gzip.NewWriterLevel(ioutil.Discard, level)
+		if err != nil {
+			panic(err)
+		}
+		return gz
+	}
+
 	return func(c *gin.Context) {
 		if !shouldCompress(c.Request) {
 			return
 		}
-		gz, err := gzip.NewWriterLevel(c.Writer, level)
-		if err != nil {
-			return
-		}
+
+		gz := gzPool.Get().(*gzip.Writer)
+		defer gzPool.Put(gz)
+		gz.Reset(c.Writer)
 
 		c.Header("Content-Encoding", "gzip")
 		c.Header("Vary", "Accept-Encoding")
