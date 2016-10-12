@@ -42,6 +42,10 @@ type gzipWriter struct {
 	writer *gzip.Writer
 }
 
+func (g *gzipWriter) WriteString(s string) (n int, err error) {
+	return g.writer.Write([]byte(s))
+}
+
 func (g *gzipWriter) Write(data []byte) (int, error) {
 	return g.writer.Write(data)
 }
