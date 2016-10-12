@@ -1,14 +1,10 @@
 package gzip
 
-import (
-	"compress/gzip"
-	"net/http"
-	"path/filepath"
-	"strings"
+import "compress/gzip"
 
-	"github.com/gin-gonic/gin"
-)
-
+// Compression levels
+// These constants reference gzip package, so that code that imports
+// "contrib/compress" does not also have to import "compress/gzip".
 const (
 	BestCompression    = gzip.BestCompression
 	BestSpeed          = gzip.BestSpeed
@@ -16,49 +12,32 @@ const (
 	NoCompression      = gzip.NoCompression
 )
 
-func Gzip(level int) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		if !shouldCompress(c.Request) {
-			return
-		}
-		gz, err := gzip.NewWriterLevel(c.Writer, level)
-		if err != nil {
-			return
-		}
+// Internal constants
+const (
+	encodingGzip = "gzip"
 
-		c.Header("Content-Encoding", "gzip")
-		c.Header("Vary", "Accept-Encoding")
-		c.Writer = &gzipWriter{c.Writer, gz}
-		defer func() {
-			c.Header("Content-Length", "")
-			gz.Close()
-		}()
-		c.Next()
-	}
-}
+	headerAcceptEncoding  = "Accept-Encoding"
+	headerContentEncoding = "Content-Encoding"
+	headerContentLength   = "Content-Length"
+	headerContentType     = "Content-Type"
+	headerVary            = "Vary"
+)
 
-type gzipWriter struct {
-	gin.ResponseWriter
-	writer *gzip.Writer
-}
-
-func (g *gzipWriter) Write(data []byte) (int, error) {
-	return g.writer.Write(data)
-}
-
-func shouldCompress(req *http.Request) bool {
-	if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
-		return false
-	}
-	extension := filepath.Ext(req.URL.Path)
-	if len(extension) < 4 { // fast path
-		return true
-	}
-
-	switch extension {
-	case ".png", ".gif", ".jpeg", ".jpg":
-		return false
-	default:
-		return true
-	}
+// Defaults
+var defaults = struct {
+	CompressionLevel     int
+	ForceCompression     bool
+	CompressContentTypes []string
+}{
+	CompressionLevel: DefaultCompression,
+	ForceCompression: false,
+	CompressContentTypes: []string{
+		"text/plain",
+		"text/html",
+		"text/javascript",
+		"application/javascript",
+		"application/x-javascript",
+		"application/json",
+		"application/octet-stream",
+	},
 }

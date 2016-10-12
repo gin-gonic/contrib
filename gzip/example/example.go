@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/contrib/gzip"
-	"github.com/gin-gonic/gin"
 	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/rounds/go-gin-contrib/gzip"
 )
 
 func main() {
 	r := gin.Default()
-	r.Use(gzip.Gzip(gzip.DefaultCompression))
+	r.Use(gzip.OutputFilter(nil))
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong "+fmt.Sprint(time.Now().Unix()))
 	})
