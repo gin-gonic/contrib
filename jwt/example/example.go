@@ -7,8 +7,12 @@ import (
 	"time"
 )
 
-var (
+const (
 	mysupersecretpassword = "unicornsAreAwesome"
+)
+
+var (
+	method = jwt_lib.SigningMethodHS256
 )
 
 func main() {
@@ -18,7 +22,7 @@ func main() {
 
 	public.GET("/", func(c *gin.Context) {
 		// Create the token
-		token := jwt_lib.New(jwt_lib.GetSigningMethod("HS256"))
+		token := jwt_lib.New(method)
 		// Set some claims
 		token.Claims["ID"] = "Christopher"
 		token.Claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
@@ -31,7 +35,7 @@ func main() {
 	})
 
 	private := r.Group("/api/private")
-	private.Use(jwt.Auth(mysupersecretpassword))
+	private.Use(jwt.Auth(mysupersecretpassword, method))
 
 	/*
 		Set this header in your request to get here.
