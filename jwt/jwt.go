@@ -7,10 +7,13 @@ import (
 
 func Auth(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) (interface{}, error) {
+		token, err := jwt_lib.ParseFromRequest(c.Request, func(token *jwt_lib.Token) (interface{}, error) {
 			b := ([]byte(secret))
 			return b, nil
 		})
+
+		// Put claims into context so that handlers can use info such as userId
+		c.Set("token-claims", token.Claims)
 
 		if err != nil {
 			c.AbortWithError(401, err)
