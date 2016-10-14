@@ -31,7 +31,7 @@ func main() {
 	})
 
 	private := r.Group("/api/private")
-	private.Use(jwt.Auth(mysupersecretpassword))
+	private.Use(jwt.Auth(mysupersecretpassword,"HS256"))
 
 	/*
 		Set this header in your request to get here.
