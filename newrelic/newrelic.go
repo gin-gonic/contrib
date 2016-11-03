@@ -3,7 +3,7 @@ package newrelic
 import (
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 	metrics "github.com/yvasiyarov/go-metrics"
 	"github.com/yvasiyarov/gorelic"
 )

@@ -3,7 +3,7 @@ package main
 import (
 	jwt_lib "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/contrib/jwt"
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 	"time"
 )
 

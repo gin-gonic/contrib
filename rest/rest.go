@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // All of the methods are the same type as HandlerFunc

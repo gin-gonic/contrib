@@ -2,7 +2,7 @@
 ```go
 package main
 
-import "github.com/gin-gonic/gin"
+import "gopkg.in/gin-gonic/gin.v1"
 import "github.com/gin-gonic/contrib/expvar"
 
 func main() {
