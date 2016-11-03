@@ -10,7 +10,7 @@ package main
 import (
     "html/template"
 
-    "github.com/gin-gonic/gin"
+    "gopkg.in/gin-gonic/gin.v1"
     "github.com/gin-gonic/contrib/renders/multitemplate"
 )
 
@@ -46,7 +46,7 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/contrib/renders/multitemplate"
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 )
 
 func main() {

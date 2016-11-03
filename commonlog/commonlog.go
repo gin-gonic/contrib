@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // Instances a Logger middleware that will write the logs to gin.DefaultWriter

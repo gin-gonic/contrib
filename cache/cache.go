@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"errors"
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 	"io"
 	"net/http"
 	"net/url"

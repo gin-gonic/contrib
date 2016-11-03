@@ -3,7 +3,7 @@ package multitemplate
 import (
 	"html/template"
 
-	"github.com/gin-gonic/gin/render"
+	"gopkg.in/gin-gonic/gin.v1/render"
 )
 
 type Render map[string]*template.Template

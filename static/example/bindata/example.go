@@ -3,7 +3,7 @@ package main
 import (
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/contrib/static"
-	"github.com/gin-gonic/gin"
+	"gopkg.in/gin-gonic/gin.v1"
 	"net/http"
 	"strings"
 )

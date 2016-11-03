@@ -8,7 +8,7 @@ package main
 import (
   "github.com/getsentry/raven-go"
   "github.com/gin-gonic/contrib/sentry"
-  "github.com/gin-gonic/gin"
+  "gopkg.in/gin-gonic/gin.v1"
 )
 
 func init() {
