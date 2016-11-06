@@ -22,12 +22,16 @@ func newSettings(c Config) *settings {
 	if err := c.Validate(); err != nil {
 		panic(err.Error())
 	}
+
+	// headers can be sent lowercase
+	headers := append(sliceToLowerCase(c.AllowedHeaders), c.AllowedHeaders...)
+
 	return &settings{
 		allowedOriginFunc: c.AllowOriginFunc,
 		allowAllOrigins:   c.AllowAllOrigins,
 		allowedOrigins:    c.AllowedOrigins,
 		allowedMethods:    distinct(c.AllowedMethods),
-		allowedHeaders:    distinct(c.AllowedHeaders),
+		allowedHeaders:    distinct(headers),
 		normalHeaders:     generateNormalHeaders(c),
 		preflightHeaders:  generatePreflightHeaders(c),
 	}
@@ -49,12 +53,20 @@ func (c *settings) validateOrigin(origin string) (string, bool) {
 }
 
 func (c *settings) validateMethod(method string) bool {
-	// TODO!!!
-	return true
+	return stringInSlice(method, c.allowedMethods)
 }
 
-func (c *settings) validateHeader(header string) bool {
-	// TODO!!!
+func (c *settings) validateHeaders(header string) bool {
+	// We get all the values
+	headers := splitSeparatedValues(header)
+
+	// If one of the headers isn't known, we should refuse it
+	for _, h := range headers {
+		if ! stringInSlice(h, c.allowedHeaders) {
+			return false
+		}
+	}
+
 	return true
 }
 
@@ -97,7 +109,26 @@ func distinct(s []string) []string {
 	return s[:len(m)]
 }
 
-func parse(content string) []string {
+// checks if a value exist into a slice of strings
+func stringInSlice(a string, list []string) bool {
+    for _, b := range list {
+        if b == a {
+            return true
+        }
+    }
+    return false
+}
+
+// Converts a slice of strings to a new slice of strings in lower case
+func sliceToLowerCase(in []string) []string {
+	out := make([]string,len(in))
+	for i, v := range in {
+		out[i] = strings.ToLower(v)
+	}
+	return out
+}
+
+func splitSeparatedValues(content string) []string {
 	if len(content) == 0 {
 		return nil
 	}

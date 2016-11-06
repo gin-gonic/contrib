@@ -10,6 +10,7 @@ import (
 )
 
 type Config struct {
+	// AbortOnError make the server side CORS check return 403 instead of 200 in case of bad request
 	AbortOnError    bool
 	AllowAllOrigins bool
 
@@ -104,9 +105,12 @@ func New(config Config) gin.HandlerFunc {
 		if len(origin) == 0 {
 			return
 		}
+
+		options := c.Request.Method == http.MethodOptions
+
 		origin, valid := s.validateOrigin(origin)
 		if valid {
-			if c.Request.Method == "OPTIONS" {
+			if options {
 				valid = handlePreflight(c, s)
 			} else {
 				valid = handleNormal(c, s)
@@ -116,19 +120,27 @@ func New(config Config) gin.HandlerFunc {
 		if !valid {
 			if config.AbortOnError {
 				c.AbortWithStatus(http.StatusForbidden)
+			} else {
+				c.AbortWithStatus(http.StatusOK)
 			}
 			return
 		}
 		c.Header("Access-Control-Allow-Origin", origin)
+
+		if ( options ) { // We don't want to let gin switch to the next layer (does it actually matter ?)
+			c.AbortWithStatus(http.StatusOK)
+		} else {
+			c.Next()
+		}
 	}
 }
 
 func handlePreflight(c *gin.Context, s *settings) bool {
-	c.AbortWithStatus(200)
+	// c.AbortWithStatus(200) // <-- Doing this prevents from sending any header afterwards
 	if !s.validateMethod(c.Request.Header.Get("Access-Control-Request-Method")) {
 		return false
 	}
-	if !s.validateHeader(c.Request.Header.Get("Access-Control-Request-Header")) {
+	if !s.validateHeaders(c.Request.Header.Get("Access-Control-Request-Headers")) {
 		return false
 	}
 	for key, value := range s.preflightHeaders {
