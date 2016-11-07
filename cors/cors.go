@@ -127,10 +127,8 @@ func New(config Config) gin.HandlerFunc {
 		}
 		c.Header("Access-Control-Allow-Origin", origin)
 
-		if ( options ) { // We don't want to let gin switch to the next layer (does it actually matter ?)
+		if ( options ) { // We don't want to let gin switch to the next layer
 			c.AbortWithStatus(http.StatusOK)
-		} else {
-			c.Next()
 		}
 	}
 }
