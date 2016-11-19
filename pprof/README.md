@@ -10,7 +10,7 @@ import "github.com/gin-gonic/contrib/pprof"
 
 func main() {
     router := gin.Default()
-		pprof.Register(router, nil)
+    pprof.Register(router, nil)
     router.Run(":8080")
 }
 ```
