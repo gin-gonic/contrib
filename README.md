@@ -1,6 +1,6 @@
-# gin-gonic/contrib [![Build Status](https://travis-ci.org/gin-gonic/contrib.svg)](https://travis-ci.org/gin-gonic/contrib)
+# gin-gonic/contrib 
 
-=======  
+[![Build Status](https://travis-ci.org/gin-gonic/contrib.svg)](https://travis-ci.org/gin-gonic/contrib)
 
 Here you'll find middleware ready to  use with [Gin Framework](https://github.com/gin-gonic/gin). Submit your pull request, either with the package in a folder, or by adding a link to this `README.md`.
 
@@ -12,11 +12,11 @@ If adding a link to your own repository, please follow this example:
 ```
 
 Each author is responsible of maintaining his own code, although if you submit as a package, you allow the community to fix it. You can also submit a pull request to fix an existing package.
-
-======  
+  
 ## List of external middleware
 
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
++ [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
 + [gin-csrf](https://github.com/utrack/gin-csrf) - CSRF protection
 + [gin-health](https://github.com/utrack/gin-health) - middleware that simplifies stat reporting via [gocraft/health](https://github.com/gocraft/health)
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
