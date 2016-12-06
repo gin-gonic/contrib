@@ -28,3 +28,6 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-limit](https://github.com/aviddiviner/gin-limit) - limits simultaneous requests; can help with high traffic load
 + [ez-gin-template](https://github.com/michelloworld/ez-gin-template) - easy template wrap for gin
 + [gin-hydra](https://github.com/janekolszak/gin-hydra) - [Hydra](https://github.com/ory-am/hydra) middleware for Gin
++ [gin-glog](https://github.com/zalando/gin-glog) - meant as drop-in replacement for Gin's default logger
++ [gin-gomonitor](https://github.com/zalando/gin-gomonitor) - for exposing metrics with Go-Monitor
++ [gin-oauth2](https://github.com/zalando/gin-oauth2) - for working with OAuth2
