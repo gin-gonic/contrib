@@ -30,6 +30,14 @@ func (r Render) AddFromFiles(name string, files ...string) *template.Template {
 	return tmpl
 }
 
+// AddFromFilesFuncs allows to add custom functions
+func (r Render) AddFromFilesFuncs(name string, funcMap template.FuncMap, files ...string) *template.Template {
+	tname := filepath.Base(files[0])
+	tmpl := template.Must(template.New(tname).Funcs(funcMap).ParseFiles(files...))
+	r.Add(name, tmpl)
+	return tmpl
+}
+
 func (r Render) AddFromGlob(name, glob string) *template.Template {
 	tmpl := template.Must(template.ParseGlob(glob))
 	r.Add(name, tmpl)
