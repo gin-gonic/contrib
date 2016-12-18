@@ -15,6 +15,7 @@ Each author is responsible of maintaining his own code, although if you submit a
   
 ## List of external middleware
 
++ [RestGate](https://github.com/pjebs/restgate) - Secure authentication for REST API endpoints
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
 + [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
 + [gin-csrf](https://github.com/utrack/gin-csrf) - CSRF protection
