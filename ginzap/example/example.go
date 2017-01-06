@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/uber-go/zap"
-	"github.com/yezooz/contrib/ginzap"
+	"github.com/gin-gonic/contrib/ginzap"
 	"github.com/gin-gonic/gin"
 )
 
