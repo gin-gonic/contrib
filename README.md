@@ -32,3 +32,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-glog](https://github.com/zalando/gin-glog) - meant as drop-in replacement for Gin's default logger
 + [gin-gomonitor](https://github.com/zalando/gin-gomonitor) - for exposing metrics with Go-Monitor
 + [gin-oauth2](https://github.com/zalando/gin-oauth2) - for working with OAuth2
++ [xss-mw](https://github.com/dvwright/xss-mw) - XssMw is a middleware designed to "auto remove XSS" from user submitted input
