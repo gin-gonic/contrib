@@ -87,10 +87,12 @@ func (w *cachedWriter) Write(data []byte) (int, error) {
 	if err == nil {
 		//cache response
 		store := w.store
+		newData := make([]byte, len(data))
+		copy(newData, data)
 		val := responseCache{
 			w.status,
 			w.Header(),
-			data,
+			newData,
 		}
 		err = store.Set(w.key, val, w.expire)
 		if err != nil {
@@ -136,15 +138,16 @@ func CachePage(store CacheStore, expire time.Duration, handle gin.HandlerFunc) g
 		url := c.Request.URL
 		key := urlEscape(PageCachePrefix, url.RequestURI())
 		if err := store.Get(key, &cache); err != nil {
+			tempC := c.Copy()
 			// replace writer
-			writer := newCachedWriter(store, expire, c.Writer, key)
-			c.Writer = writer
-			handle(c)
+			writer := newCachedWriter(store, expire, tempC.Writer, key)
+			tempC.Writer = writer
+			handle(tempC)
 		} else {
 			c.Writer.WriteHeader(cache.status)
 			for k, vals := range cache.header {
 				for _, v := range vals {
-					c.Writer.Header().Add(k, v)
+					c.Writer.Header().Set(k, v)
 				}
 			}
 			c.Writer.Write(cache.data)
