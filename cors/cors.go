@@ -106,8 +106,11 @@ func New(config Config) gin.HandlerFunc {
 		}
 		origin, valid := s.validateOrigin(origin)
 		if valid {
+			c.Header("Access-Control-Allow-Origin", origin)
 			if c.Request.Method == "OPTIONS" {
 				valid = handlePreflight(c, s)
+				c.Status(200)
+				return
 			} else {
 				valid = handleNormal(c, s)
 			}
@@ -119,25 +122,34 @@ func New(config Config) gin.HandlerFunc {
 			}
 			return
 		}
-		c.Header("Access-Control-Allow-Origin", origin)
+		c.Next()
 	}
 }
 
 func handlePreflight(c *gin.Context, s *settings) bool {
-	c.AbortWithStatus(200)
+	// Always set Vary headers
+	// see https://github.com/rs/cors/issues/10,
+	// https://github.com/rs/cors/commit/dbdca4d95feaa7511a46e6f1efb3b3aa505bc43f#commitcomment-12352001
+	c.Writer.Header().Add("Vary", "Origin")
+	c.Writer.Header().Add("Vary", "Access-Control-Request-Method")
+	c.Writer.Header().Add("Vary", "Access-Control-Request-Headers")
+
 	if !s.validateMethod(c.Request.Header.Get("Access-Control-Request-Method")) {
 		return false
 	}
-	if !s.validateHeader(c.Request.Header.Get("Access-Control-Request-Header")) {
+	if !s.validateHeaders(parseHeaders(c.Request.Header.Get("Access-Control-Request-Headers"))) {
 		return false
 	}
 	for key, value := range s.preflightHeaders {
 		c.Writer.Header()[key] = value
 	}
+
 	return true
 }
 
 func handleNormal(c *gin.Context, s *settings) bool {
+	c.Writer.Header().Add("Vary", "Origin")
+
 	for key, value := range s.normalHeaders {
 		c.Writer.Header()[key] = value
 	}
