@@ -120,11 +120,13 @@ func New(config Config) gin.HandlerFunc {
 			return
 		}
 		c.Header("Access-Control-Allow-Origin", origin)
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
+		}
 	}
 }
 
 func handlePreflight(c *gin.Context, s *settings) bool {
-	c.AbortWithStatus(200)
 	if !s.validateMethod(c.Request.Header.Get("Access-Control-Request-Method")) {
 		return false
 	}
