@@ -3,6 +3,14 @@
 	"GoVersion": "go1.3",
 	"Deps": [
 		{
+			"ImportPath": "github.com/bradfitz/gomemcache/memcache",
+			"Rev": "fb1f79c6b65acda83063cbc69f6bba1522558bfc"
+		},
+		{
+			"ImportPath": "github.com/bradleypeabody/gorilla-sessions-memcache",
+			"Rev": "88ee8d4815fec038f22ce295cffa0165820fc2b8"
+		},
+		{
 			"ImportPath": "github.com/boj/redistore",
 			"Rev": "0cd55584b172cefd31c4cb84e2904585d898c7b2"
 		},
