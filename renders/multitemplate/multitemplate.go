@@ -2,7 +2,7 @@ package multitemplate
 
 import (
 	"html/template"
-
+	"path/filepath"
 	"github.com/gin-gonic/gin/render"
 )
 
@@ -26,6 +26,14 @@ func (r Render) Add(name string, tmpl *template.Template) {
 
 func (r Render) AddFromFiles(name string, files ...string) *template.Template {
 	tmpl := template.Must(template.ParseFiles(files...))
+	r.Add(name, tmpl)
+	return tmpl
+}
+
+// AddFromFilesFuncs allows to add custom functions
+func (r Render) AddFromFilesFuncs(name string, funcMap template.FuncMap, files ...string) *template.Template {
+	tname := filepath.Base(files[0])
+	tmpl := template.Must(template.New(tname).Funcs(funcMap).ParseFiles(files...))
 	r.Add(name, tmpl)
 	return tmpl
 }
