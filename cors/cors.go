@@ -80,7 +80,7 @@ var defaultConfig = Config{
 	AbortOnError:    false,
 	AllowAllOrigins: true,
 	AllowedMethods:  []string{"GET", "POST", "PUT", "PATCH", "HEAD"},
-	AllowedHeaders:  []string{"Content-Type"},
+	AllowedHeaders:  []string{"Content-Type", "Access-Control-Allow-Headers"},
 	//ExposedHeaders:   "",
 	AllowCredentials: false,
 	MaxAge:           12 * time.Hour,
@@ -104,10 +104,12 @@ func New(config Config) gin.HandlerFunc {
 		if len(origin) == 0 {
 			return
 		}
+		onlyHeaders := false
 		origin, valid := s.validateOrigin(origin)
 		if valid {
 			if c.Request.Method == "OPTIONS" {
 				valid = handlePreflight(c, s)
+				onlyHeaders = true
 			} else {
 				valid = handleNormal(c, s)
 			}
@@ -120,11 +122,13 @@ func New(config Config) gin.HandlerFunc {
 			return
 		}
 		c.Header("Access-Control-Allow-Origin", origin)
+		if onlyHeaders {
+			c.AbortWithStatus(200)
+		}
 	}
 }
 
 func handlePreflight(c *gin.Context, s *settings) bool {
-	c.AbortWithStatus(200)
 	if !s.validateMethod(c.Request.Header.Get("Access-Control-Request-Method")) {
 		return false
 	}
