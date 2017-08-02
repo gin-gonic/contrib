@@ -6,8 +6,8 @@ package ginrus
 import (
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 // Ginrus returns a gin.HandlerFunc (middleware) that logs requests using logrus.
