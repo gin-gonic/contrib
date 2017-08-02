@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/contrib/ginrus"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
