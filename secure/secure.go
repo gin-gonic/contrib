@@ -18,6 +18,7 @@ const (
 	xssProtectionHeader = "X-XSS-Protection"
 	xssProtectionValue  = "1; mode=block"
 	cspHeader           = "Content-Security-Policy"
+	referrerPolicy      = "Referrer-Policy"
 )
 
 func defaultBadHostHandler(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,8 @@ type Options struct {
 	// When developing, the AllowedHosts, SSL, and STS options can cause some unwanted effects. Usually testing happens on http, not https, and on localhost, not your production domain... so set this to true for dev environment.
 	// If you would like your development environment to mimic production with complete Host blocking, SSL redirects, and STS headers, leave this as false. Default if false.
 	IsDevelopment bool
+	// HTTP header "Referrer-Policy" governs which referrer information, sent in the Referrer header, should be included with requests made.
+	CustomReferrerPolicy string
 
 	// Handlers for when an error occurs (ie bad host).
 	BadHostHandler http.Handler
@@ -156,6 +159,11 @@ func (s *secure) process(w http.ResponseWriter, r *http.Request) error {
 	// Content Security Policy header.
 	if len(s.opt.ContentSecurityPolicy) > 0 {
 		w.Header().Add(cspHeader, s.opt.ContentSecurityPolicy)
+	}
+
+	// Referrer policy header.
+	if len(s.opt.CustomReferrerPolicy) > 0 {
+		w.Header().Add(referrerPolicy, s.opt.CustomReferrerPolicy)
 	}
 
 	return nil
