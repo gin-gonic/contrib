@@ -21,6 +21,7 @@ func main() {
 		ContentTypeNosniff:    true,
 		BrowserXssFilter:      true,
 		ContentSecurityPolicy: "default-src 'self'",
+		CustomReferrerPolicy:  "strict-origin-when-cross-origin",
 	}))
 
 	r.GET("/ping", func(c *gin.Context) {

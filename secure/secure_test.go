@@ -434,6 +434,20 @@ func TestXSSProtection(t *testing.T) {
 	expect(t, res.Header().Get("X-XSS-Protection"), "1; mode=block")
 }
 
+func TestReferrerPolicy(t *testing.T) {
+	s := newServer(Options{
+		CustomReferrerPolicy: "strict-origin-when-cross-origin",
+	})
+
+	res := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/foo", nil)
+
+	s.ServeHTTP(res, req)
+
+	expect(t, res.Code, http.StatusOK)
+	expect(t, res.Header().Get("Referrer-Policy"), "strict-origin-when-cross-origin")
+}
+
 func TestCsp(t *testing.T) {
 	s := newServer(Options{
 		ContentSecurityPolicy: "default-src 'self'",
