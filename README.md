@@ -34,3 +34,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-oauth2](https://github.com/zalando/gin-oauth2) - for working with OAuth2
 + [static](https://github.com/hyperboloide/static) An alternative static assets handler for the gin framework.
 + [xss-mw](https://github.com/dvwright/xss-mw) - XssMw is a middleware designed to "auto remove XSS" from user submitted input
++ [gin-correlationID](https://github.com/grayMou5e/gin-correlationID) - for adding correlationID into HTTP request.
