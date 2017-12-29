@@ -10,6 +10,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type loggerEntryWithFields interface {
+	WithFields(fields logrus.Fields) *logrus.Entry
+}
+
 // Ginrus returns a gin.HandlerFunc (middleware) that logs requests using logrus.
 //
 // Requests with errors are logged using logrus.Error().
@@ -18,7 +22,7 @@ import (
 // It receives:
 //   1. A time package format string (e.g. time.RFC3339).
 //   2. A boolean stating whether to use UTC time zone or local.
-func Ginrus(logger *logrus.Logger, timeFormat string, utc bool) gin.HandlerFunc {
+func Ginrus(logger loggerEntryWithFields, timeFormat string, utc bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 		// some evil middlewares modify this values
