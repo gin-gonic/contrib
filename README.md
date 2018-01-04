@@ -35,3 +35,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [static](https://github.com/hyperboloide/static) An alternative static assets handler for the gin framework.
 + [xss-mw](https://github.com/dvwright/xss-mw) - XssMw is a middleware designed to "auto remove XSS" from user submitted input
 + [gin-helmet](https://github.com/danielkov/gin-helmet) - Collection of simple security middleware.
++ [gin-jwt-session](https://github.com/ScottHuangZL/gin-jwt-session) - middleware to provide JWT/Session/Flashes, easy to use while also provide options for adjust if necessary. Provide sample too.
