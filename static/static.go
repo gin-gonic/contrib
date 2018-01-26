@@ -22,7 +22,7 @@ type localFileSystem struct {
 
 func LocalFile(root string, indexes bool) *localFileSystem {
 	return &localFileSystem{
-		FileSystem: gin.Dir(root, indexes),
+		FileSystem: http.Dir(root),
 		root:       root,
 		indexes:    indexes,
 	}
