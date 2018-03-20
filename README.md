@@ -37,4 +37,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-helmet](https://github.com/danielkov/gin-helmet) - Collection of simple security middleware.
 + [gin-jwt-session](https://github.com/ScottHuangZL/gin-jwt-session) - middleware to provide JWT/Session/Flashes, easy to use while also provide options for adjust if necessary. Provide sample too.
 + [gin-template](https://github.com/foolin/gin-template) - Easy and simple to use html/template for gin framework.
-+ [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter)
++ [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
