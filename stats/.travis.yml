@@ -1,0 +1,17 @@
+language: go
+sudo: false
+
+go:
+  - 1.6.x
+  - 1.7.x
+  - 1.8.x
+  - 1.9.x
+  - 1.10.x
+  - master
+
+go_import_path: github.com/semihalev/gin-stats
+
+script: go test -v -covermode=atomic -coverprofile=coverage.out
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
