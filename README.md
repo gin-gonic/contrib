@@ -39,3 +39,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-template](https://github.com/foolin/gin-template) - Easy and simple to use html/template for gin framework.
 + [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
++ [gin-stats](https://github.com/semihalev/gin-stats) - Lightweight and useful request metrics middleware
