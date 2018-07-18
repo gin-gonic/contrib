@@ -41,4 +41,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
 + [gin-access-limit](https://github.com/bu/gin-access-limit) - An access-control middleware by specifying allowed source CIDR notations.
 + [gin-stats](https://github.com/semihalev/gin-stats) - Lightweight and useful request metrics middleware
-[gin-session](https://github.com/go-session/gin-session) - A efficient, safely and easy-to-use session library for Go.
++ [gin-session](https://github.com/go-session/gin-session) - A efficient, safely and easy-to-use session library for Go.
