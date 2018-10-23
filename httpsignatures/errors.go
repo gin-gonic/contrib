@@ -19,8 +19,6 @@ var (
 	ErrNoSignature = errors.New("No Signature header found in request")
 	// ErrSignatureFormat error when signature format is invalid
 	ErrSignatureFormat = errors.New("Invalid Signature header format")
-	//ErrNotEnoughPermission error when keyid do not have enough permission
-	ErrNotEnoughPermission = errors.New("KeyID do not have permission")
 	//ErrInvalidSign error when signing string do not match
 	ErrInvalidSign = errors.New("Invalid sign")
 )

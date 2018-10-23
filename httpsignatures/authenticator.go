@@ -22,24 +22,17 @@ func NewAuthenticator(secretKeys Secrects, headers []string, v Validator) *Authe
 }
 
 // Authenticated returns a gin middleware which permits given permissions in parameter.
-func (a *Authenticator) Authenticated(permissions Permission) gin.HandlerFunc {
+func (a *Authenticator) Authenticated() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sigHeader, err := NewSignatureHeader(c.Request)
 		if err != nil {
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
-
-		if !permissions.isPermit(sigHeader.keyID) {
-			c.AbortWithError(http.StatusUnauthorized, ErrNotEnoughPermission)
-			return
-		}
-
 		if !a.v.IsValid(c.Request) {
 			c.AbortWithError(http.StatusBadRequest, ErrDateNotInRange)
 			return
 		}
-
 		if !a.isValidHeader(sigHeader.headers) {
 			c.AbortWithError(http.StatusBadRequest, ErrHeaderNotEnough)
 			return

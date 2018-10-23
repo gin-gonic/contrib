@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const maxTimeGapMillis = 30 * time.Second // 30 secs
+const maxTimeGap = 30 * time.Second // 30 secs
 
 // DateValidator checking validate by time range
 type DateValidator struct {
@@ -17,7 +17,7 @@ type DateValidator struct {
 // NewDateValidator return DateValidator with default value (30 second)
 func NewDateValidator() *DateValidator {
 	return &DateValidator{
-		TimeGap: maxTimeGapMillis,
+		TimeGap: maxTimeGap,
 	}
 }
 
