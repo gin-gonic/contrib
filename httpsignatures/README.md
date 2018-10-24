@@ -28,9 +28,6 @@ func main() {
 			Algorithm: hmacsha512,
 		},
 	}
-	// Define permission list
-	writePermissions := httpsignatures.Permission{writeKeyID}
-	readPermissions := httpsignatures.Permission{readKeyID, writeKeyID}
 
 	// Init server
 	r := gin.Default()
@@ -40,21 +37,10 @@ func main() {
 	dateValidator := httpsignatures.NewDateValidator()
 	auth := httpsignatures.NewAuthenticator(secrets, requiredHeaders, dateValidator)
 
-	// Group required read permission
-	readPermissionHandler := auth.Authenticated(readPermissions)
-	read := r.Group("/read")
-	read.Use(readPermissionHandler)
-	read.GET("/a", a)
-	read.POST("/b", b)
-	read.POST("/c", c)
-
-	// Group required write permission
-	writePermissionHandler := auth.Authenticated(writePermissions)
-	write := r.Group("/write")
-	write.Use(writePermissionHandler)
-	write.GET("/x", x)
-	write.POST("/y", y)
-	write.POST("/z", z)
+	r.Use(auth.Authenticated())
+	r.GET("/a", a)
+	r.POST("/b", b)
+	r.POST("/c", c)
 
 	r.Run(":8080")
 }
