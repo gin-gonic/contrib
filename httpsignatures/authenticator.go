@@ -3,22 +3,59 @@ package httpsignatures
 import (
 	"bytes"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
-// Authenticator is the gin authenticator middleware
+var defaultRequiredHeaders = []string{requestTarget, "date", "digest"}
+
+// Authenticator is the gin authenticator middleware.
 type Authenticator struct {
 	secrets Secrects
 	v       Validator
 	headers []string
 }
 
+// Option is the option to the Authenticator constructor.
+type Option func(*Authenticator)
+
+// WithValidator configures the Authenticator to use custom validator.
+// The default validator is timestamp based.
+func WithValidator(v Validator) Option {
+	return func(a *Authenticator) {
+		a.v = v
+	}
+}
+
+// WithRequiredHeaders is list of all requires HTTP headers that the client
+// have to include in the singing string for the request to be considered valid.
+// If not provided, the created Authenticator instance will use defaultRequiredHeaders variable.
+func WithRequiredHeaders(headers []string) Option {
+	return func(a *Authenticator) {
+		a.headers = headers
+	}
+}
+
 // NewAuthenticator creates a new Authenticator instance with
-// given allowed permissions and required header and secret keys
-func NewAuthenticator(secretKeys Secrects, headers []string, v Validator) *Authenticator {
-	return &Authenticator{secrets: secretKeys, headers: headers, v: v}
+// given allowed permissions and required header and secret keys.
+func NewAuthenticator(secretKeys Secrects, options ...Option) *Authenticator {
+	var a = &Authenticator{secrets: secretKeys}
+
+	for _, fn := range options {
+		fn(a)
+	}
+
+	if a.v == nil {
+		a.v = NewDateValidator()
+	}
+
+	if len(a.headers) == 0 {
+		a.headers = defaultRequiredHeaders
+	}
+
+	return a
 }
 
 // Authenticated returns a gin middleware which permits given permissions in parameter.
