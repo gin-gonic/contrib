@@ -1,12 +1,15 @@
 package httpsignatures
 
 import (
+	"encoding/base64"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -24,21 +27,74 @@ var sampleSignatureString = fmt.Sprintf("Signature keyId=\"%s\",algorithm=\"%s\"
 	sampleKeyID, sampleAlgorithm, strings.Join(sampleHeader, " "), sampleSignature)
 
 func TestFromSignatureString(t *testing.T) {
-	keyID, _, headers, algorithm, err := fromSignatureString(sampleSignatureString)
-	assert.Equal(t, sampleKeyID, keyID)
-	assert.Equal(t, sampleAlgorithm, algorithm)
-	assert.Equal(t, sampleHeader, headers)
-	assert.Nil(t, err)
-}
+	var tests = []struct {
+		// TODO: fill name of the test case
+		name            string
+		signatureHeader string
+		success         bool
+		keyID           string
+		algorithm       string
+		headers         []string
+		signature       string
+	}{
+		{
+			signatureHeader: ``,
+			success:         false,
+		},
+		{
+			signatureHeader: `Signature xxx`,
+			success:         false,
+		},
+		// TODO fix this test case
+		{
+			signatureHeader: `notASignature keyId="sample_key_id",algorithm="hmac-sha512",headers="(request-target) date digest",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ=="`,
+			success:         false,
+		},
+		// TODO fix this test case
+		{
+			signatureHeader: `Signature algorithm="hmac-sha512",headers="",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ=="`,
+			success:         false,
+		},
+		// TODO fix this test case
+		{
+			signatureHeader: `Signature keyId="sample_key_id",algorithm="hmac-sha512",headers=""`,
+			success:         false,
+		},
+		// TODO fix this test case
+		{
+			signatureHeader: `Signature keyId="sample_key_id",algorithm="hmac-sha512",headers="",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ=="`,
+			success:         true,
+			keyID:           "sample_key_id",
+			algorithm:       "hmac-sha512",
+			headers:         []string{},
+			signature:       "70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ==",
+		},
+		{
+			signatureHeader: `Signature keyId="sample_key_id",algorithm="hmac-sha512",headers="(request-target) date digest",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ=="`,
+			success:         true,
+			keyID:           "sample_key_id",
+			algorithm:       "hmac-sha512",
+			headers:         []string{"(request-target)", "date", "digest"},
+			signature:       "70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ==",
+		},
+		{
+			signatureHeader: `Signature keyId="sample_key_id",algorithm="hmac-sha512",headers="(request-target) date digest",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ==",keyId="sample_key_id_2"`,
+			success:         true,
+			keyID:           "sample_key_id_2",
+			algorithm:       "hmac-sha512",
+			headers:         []string{"(request-target)", "date", "digest"},
+			signature:       "70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ==",
+		},
+	}
 
-func TestFromSignatureStringErrorKeyVal(t *testing.T) {
-	_, _, _, _, err := fromSignatureString(invalidSignatureString)
-	assert.Equal(t, err, ErrSignatureFormat)
-}
-
-func TestFromSignatureStringErrorFormat(t *testing.T) {
-	_, _, _, _, err := fromSignatureString("hello-world")
-	assert.Equal(t, err, ErrSignatureFormat)
+	for _, tc := range tests {
+		keyID, signature, headers, algorithm, err := fromSignatureString(tc.signatureHeader)
+		require.True(t, (err == nil) == tc.success)
+		assert.Equal(t, tc.keyID, keyID)
+		assert.Equal(t, tc.algorithm, algorithm)
+		assert.Equal(t, tc.headers, headers)
+		assert.Equal(t, tc.signature, base64.StdEncoding.EncodeToString(signature))
+	}
 }
 
 func TestCalculateDigest(t *testing.T) {

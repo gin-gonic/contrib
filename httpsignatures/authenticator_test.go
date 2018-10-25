@@ -15,15 +15,14 @@ import (
 )
 
 const (
-	readID             = KeyID("read")
-	writeID            = KeyID("write")
-	invalidKeyID       = KeyID("invalid key")
-	invaldAlgo         = "invalidAlgo"
-	invalidSignature   = "Invalid Signature"
-	requestNilBodySig  = "ewYjBILGshEmTDDMWLeBc9kQfIscSKxmFLnUBU/eXQCb0hrY1jh7U5SH41JmYowuA4p6+YPLcB9z/ay7OvG/Sg=="
-	requestBodyContent = "hello world"
-	requestBodyDigest  = "SHA-256=uU0nuZNNPgilLlLX2n2r+sSE7+N6U4DukIj3rOLvzek="
-	requestBodySig     = "s8MEyer3dSpSsnL0+mQvUYgKm2S4AEX+hsvKmeNI7wgtLFplbCZtt8YOcySZrCyYbOJdPF1NASDHfupSuekecg=="
+	readID            = KeyID("read")
+	writeID           = KeyID("write")
+	invalidKeyID      = KeyID("invalid key")
+	invaldAlgo        = "invalidAlgo"
+	invalidSignature  = "Invalid Signature"
+	requestNilBodySig = "ewYjBILGshEmTDDMWLeBc9kQfIscSKxmFLnUBU/eXQCb0hrY1jh7U5SH41JmYowuA4p6+YPLcB9z/ay7OvG/Sg=="
+	requestBodyDigest = "SHA-256=uU0nuZNNPgilLlLX2n2r+sSE7+N6U4DukIj3rOLvzek="
+	requestBodySig    = "s8MEyer3dSpSsnL0+mQvUYgKm2S4AEX+hsvKmeNI7wgtLFplbCZtt8YOcySZrCyYbOJdPF1NASDHfupSuekecg=="
 )
 
 var (
@@ -45,7 +44,7 @@ var (
 
 func runTest(secretKeys Secrects, headers []string, v Validator, req *http.Request) *gin.Context {
 	gin.SetMode(gin.TestMode)
-	auth := NewAuthenticator(secretKeys, headers, v)
+	auth := NewAuthenticator(secretKeys, WithRequiredHeaders(headers), WithValidator(v))
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
 	c.Request = req
 	auth.Authenticated()(c)
@@ -163,7 +162,7 @@ func TestHttpInvalidRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := gin.Default()
-	auth := NewAuthenticator(secrets, requiredHeaders, &dateAlwaysValid{})
+	auth := NewAuthenticator(secrets, WithValidator(&dateAlwaysValid{}))
 	r.Use(auth.Authenticated())
 	r.GET("/", httpTestGet)
 
@@ -182,7 +181,7 @@ func TestHttpValidRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := gin.Default()
-	auth := NewAuthenticator(secrets, requiredHeaders, &dateAlwaysValid{})
+	auth := NewAuthenticator(secrets, WithValidator(&dateAlwaysValid{}))
 	r.Use(auth.Authenticated())
 	r.GET("/", httpTestGet)
 
@@ -201,7 +200,7 @@ func TestHttpValidRequestBody(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := gin.Default()
-	auth := NewAuthenticator(secrets, requiredHeaders, &dateAlwaysValid{})
+	auth := NewAuthenticator(secrets, WithValidator(&dateAlwaysValid{}))
 	r.Use(auth.Authenticated())
 	r.POST("/", httpTestPost)
 
