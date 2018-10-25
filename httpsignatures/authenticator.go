@@ -128,17 +128,16 @@ func (a *Authenticator) getSecret(keyID KeyID, algorithm string) (*Secret, error
 func constructSignMessage(r *http.Request, headers []string) string {
 	var signBuffer bytes.Buffer
 	for i, field := range headers {
-		var signString string
+		var fieldValue string
 		switch field {
-		case "digest":
-			signString = fmt.Sprintf("%s: %s", field, r.Header.Get("Digest"))
-		case "date":
-			signString = fmt.Sprintf("%s: %s", field, r.Header.Get("Date"))
+		case "host":
+			fieldValue = r.Host
 		case "(request-target)":
-			signString = fmt.Sprintf("%s: %s %s", field, strings.ToLower(r.Method), r.URL.RequestURI())
+			fieldValue = fmt.Sprintf("%s %s", strings.ToLower(r.Method), r.URL.RequestURI())
 		default:
-			signString = fmt.Sprintf("%s: %s", field, r.Header.Get(field))
+			fieldValue = r.Header.Get(field)
 		}
+		signString := fmt.Sprintf("%s: %s", field, fieldValue)
 		signBuffer.WriteString(signString)
 		if i < len(headers)-1 {
 			signBuffer.WriteString("\n")
