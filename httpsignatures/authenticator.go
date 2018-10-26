@@ -2,6 +2,7 @@ package httpsignatures
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"strings"
@@ -13,9 +14,9 @@ var defaultRequiredHeaders = []string{requestTarget, "date", "digest"}
 
 // Authenticator is the gin authenticator middleware.
 type Authenticator struct {
-	secrets Secrects
-	v       Validator
-	headers []string
+	secrets    Secrects
+	validators []Validator
+	headers    []string
 }
 
 // Option is the option to the Authenticator constructor.
@@ -23,9 +24,9 @@ type Option func(*Authenticator)
 
 // WithValidator configures the Authenticator to use custom validator.
 // The default validator is timestamp based.
-func WithValidator(v Validator) Option {
+func WithValidator(validators []Validator) Option {
 	return func(a *Authenticator) {
-		a.v = v
+		a.validators = validators
 	}
 }
 
@@ -47,8 +48,10 @@ func NewAuthenticator(secretKeys Secrects, options ...Option) *Authenticator {
 		fn(a)
 	}
 
-	if a.v == nil {
-		a.v = NewDateValidator()
+	if a.validators == nil {
+		a.validators = []Validator{
+			NewDateValidator(),
+		}
 	}
 
 	if len(a.headers) == 0 {
@@ -66,9 +69,11 @@ func (a *Authenticator) Authenticated() gin.HandlerFunc {
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
-		if !a.v.IsValid(c.Request) {
-			c.AbortWithError(http.StatusBadRequest, ErrDateNotInRange)
-			return
+		for _, v := range a.validators {
+			if err := v.Validate(c.Request); err != nil {
+				c.AbortWithError(http.StatusBadRequest, err)
+				return
+			}
 		}
 		if !a.isValidHeader(sigHeader.headers) {
 			c.AbortWithError(http.StatusBadRequest, ErrHeaderNotEnough)
@@ -86,7 +91,8 @@ func (a *Authenticator) Authenticated() gin.HandlerFunc {
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
-		if !bytes.Equal(signature, sigHeader.signature) {
+		signatureBase64 := base64.StdEncoding.EncodeToString(signature)
+		if signatureBase64 != sigHeader.signature {
 			c.AbortWithError(http.StatusUnauthorized, ErrInvalidSign)
 			return
 		}

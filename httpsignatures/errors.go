@@ -19,8 +19,6 @@ var (
 	ErrInvalidDigest = errors.New("Sha256 of body is not match with digest")
 	// ErrNoSignature error when no Signature not found in header
 	ErrNoSignature = errors.New("No Signature header found in request")
-	// ErrSignatureFormat error when signature format is invalid
-	ErrSignatureFormat = errors.New("Invalid Signature header format")
 	//ErrInvalidSign error when signing string do not match
 	ErrInvalidSign = errors.New("Invalid sign")
 	//ErrMissingKeyID error when keyId not in header

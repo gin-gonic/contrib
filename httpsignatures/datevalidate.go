@@ -21,17 +21,17 @@ func NewDateValidator() *DateValidator {
 	}
 }
 
-// IsValid return nonce is valid or not by time range
-func (v *DateValidator) IsValid(r *http.Request) bool {
+// Validate return error when checking if header date is valid or not
+func (v *DateValidator) Validate(r *http.Request) error {
 	t, err := http.ParseTime(r.Header.Get("Date"))
 	if err != nil {
-		return false
+		return err
 	}
 	serverTime := time.Now()
 	start := serverTime.Add(-v.TimeGap)
 	stop := serverTime.Add(v.TimeGap)
 	if t.Before(start) || t.After(stop) {
-		return false
+		return ErrDateNotInRange
 	}
-	return true
+	return nil
 }
