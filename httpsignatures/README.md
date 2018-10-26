@@ -34,8 +34,8 @@ func main() {
 
 	// Init require params of middleware
 	requiredHeaders := []string{"(request-target)", "date", "digest"}
-	dateValidator := httpsignatures.NewDateValidator()
-	auth := httpsignatures.NewAuthenticator(secrets, requiredHeaders, dateValidator)
+	//Create middleware with default rule. Could modify by parse Option func
+	auth := httpsignatures.NewAuthenticator(secrets)
 
 	r.Use(auth.Authenticated())
 	r.GET("/a", a)
