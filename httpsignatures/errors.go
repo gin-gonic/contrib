@@ -5,8 +5,10 @@ import (
 )
 
 var (
+	//ErrInvalidAuthorizationHeader error when get invalid format of Authorization header
+	ErrInvalidAuthorizationHeader = errors.New("Authorization header format is incorrect")
 	//ErrInvalidKeyID error when KeyID in header is not provided
-	ErrInvalidKeyID = errors.New("Invalid KeyID")
+	ErrInvalidKeyID = errors.New("Invalid keyId")
 	//ErrDateNotInRange error when date not in aceptable range
 	ErrDateNotInRange = errors.New("Date submit is not in aceptable range")
 	//ErrIncorrectAlgorithm error when Algorithm in header is not match with secret key
@@ -21,4 +23,8 @@ var (
 	ErrSignatureFormat = errors.New("Invalid Signature header format")
 	//ErrInvalidSign error when signing string do not match
 	ErrInvalidSign = errors.New("Invalid sign")
+	//ErrMissingKeyID error when keyId not in header
+	ErrMissingKeyID = errors.New("keyId must be on header")
+	//ErrMissingSignature error when signature not in header
+	ErrMissingSignature = errors.New("signature must be on header")
 )

@@ -12,9 +12,10 @@ import (
 )
 
 const (
-	authorizationHeader = "Authorization"
-	signatureHeader     = "Signature"
-	requestTarget       = "(request-target)"
+	authorizationHeader           = "Authorization"
+	authorizationHeaderInitString = "Signature "
+	signatureHeader               = "Signature"
+	requestTarget                 = "(request-target)"
 )
 
 //SignatureHeader contains basic info signature header
@@ -29,47 +30,48 @@ type SignatureHeader struct {
 
 //NewSignatureHeader new instace of SignatureHeader
 func NewSignatureHeader(r *http.Request) (*SignatureHeader, error) {
-	if s, ok := r.Header[authorizationHeader]; ok {
-		keyID, signature, headers, algorithm, err := fromSignatureString(strings.TrimPrefix(s[0], signatureHeader))
-		if err != nil {
-			return nil, err
-		}
-		date, err := http.ParseTime(r.Header.Get("Date"))
-		if err != nil {
-			return nil, err
-		}
-		digest := r.Header.Get("Digest")
-		for _, h := range headers {
-			if h == "digest" {
-				httpDigest, err := calculateDigest(r)
-				if err != nil {
-					return nil, err
-				}
-				if digest != httpDigest {
-					return nil, ErrInvalidDigest
-				}
-				break
-			}
-		}
-		return &SignatureHeader{
-			keyID:     KeyID(keyID),
-			headers:   headers,
-			date:      date,
-			signature: signature,
-			algorithm: algorithm,
-			digest:    digest,
-		}, nil
+	keyID, signature, headers, algorithm, err := fromHTTPRequest(r)
+	if err != nil {
+		return nil, err
 	}
-	return nil, ErrNoSignature
+
+	date, err := http.ParseTime(r.Header.Get("Date"))
+	if err != nil {
+		return nil, err
+	}
+	digest := r.Header.Get("Digest")
+	for _, h := range headers {
+		if h == "digest" {
+			httpDigest, err := calculateDigest(r)
+			if err != nil {
+				return nil, err
+			}
+			if digest != httpDigest {
+				return nil, ErrInvalidDigest
+			}
+			break
+		}
+	}
+	return &SignatureHeader{
+		keyID:     KeyID(keyID),
+		headers:   headers,
+		date:      date,
+		signature: signature,
+		algorithm: algorithm,
+		digest:    digest,
+	}, nil
+}
+
+func fromHTTPRequest(r *http.Request) (keyID string, signature []byte, headers []string, algorithm string, err error) {
+	s, err := getSignatureString(r)
+	if err != nil {
+		return keyID, signature, headers, algorithm, err
+	}
+	return fromSignatureString(s)
 }
 
 func fromSignatureString(s string) (keyID string, signature []byte, headers []string, algorithm string, err error) {
-	sigSplit := strings.SplitN(s, " ", 2)
-	if len(sigSplit) < 2 {
-		return keyID, signature, headers, algorithm, ErrSignatureFormat
-	}
-	sigStructString := sigSplit[1]
-	sigStructs := strings.Split(sigStructString, ",")
+	sigStructs := strings.Split(s, ",")
 	for _, pair := range sigStructs {
 		key, val, err := keyValSplit(pair)
 		if err != nil {
@@ -91,6 +93,18 @@ func fromSignatureString(s string) (keyID string, signature []byte, headers []st
 		}
 	}
 	return keyID, signature, headers, algorithm, nil
+}
+
+func getSignatureString(r *http.Request) (string, error) {
+	if s, ok := r.Header[authorizationHeader]; ok {
+		if strings.Index(s[0], authorizationHeaderInitString) != 0 {
+			return "", ErrInvalidAuthorizationHeader
+		}
+		return strings.TrimPrefix(s[0], authorizationHeaderInitString), nil
+	} else if s, ok = r.Header[signatureHeader]; ok {
+		return s[0], nil
+	}
+	return "", ErrNoSignature
 }
 
 func keyValSplit(s string) (key string, val string, err error) {
