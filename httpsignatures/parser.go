@@ -2,8 +2,6 @@ package httpsignatures
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
 	"io"
 )
 
@@ -13,13 +11,10 @@ type parser struct {
 	ch    byte
 }
 
-func newParser(input string) (*parser, error) {
+func newParser(input string) *parser {
 	p := &parser{input: input, pos: -1}
 	p.readChar()
-	if err := p.skipPrefix(); err != nil {
-		return nil, err
-	}
-	return p, nil
+	return p
 }
 
 func (p *parser) readChar() {
@@ -36,18 +31,6 @@ func (p *parser) peekChar() byte {
 		return 0
 	}
 	return p.input[p.pos+1]
-}
-
-func (p *parser) skipPrefix() error {
-	const prefix = "Signature "
-	for i := 0; i < len(prefix); i++ {
-		ch := prefix[i]
-		if ch != p.ch {
-			return fmt.Errorf("invalid prefix, expected %c at pos %d, got %c", ch, i, p.ch)
-		}
-		p.readChar()
-	}
-	return nil
 }
 
 func (p *parser) nextParam() (string, string, error) {
@@ -67,41 +50,46 @@ func (p *parser) nextParam() (string, string, error) {
 		switch p.ch {
 		case ',', 0:
 			if !valParsed {
-				return "", "", errors.New("unterminated parameter")
+				return "", "", ErrUnterminatedParameter
 			}
 			p.readChar()
 			return key.String(), val.String(), nil
 		case '"':
-			if keyParsed {
-				if p.peekChar() != ',' && p.peekChar() != 0 {
-					if err := val.WriteByte(p.ch); err != nil {
-						return "", "", err
-					}
-				} else {
-					valParsed = true
+			if !keyParsed {
+				return "", "", ErrMisingEqualCharacter
+			}
+			if p.peekChar() != ',' && p.peekChar() != 0 {
+				if err := val.WriteByte(p.ch); err != nil {
+					return "", "", err
 				}
-				p.readChar()
-
+			} else {
+				valParsed = true
 			}
+			p.readChar()
 		case '=':
-			p.readChar()
-			if p.ch != '"' {
-				return "", "", fmt.Errorf(`expected " chraracter at pos: %d`, p.pos)
+			if !keyParsed {
+				p.readChar()
+				if p.ch != '"' {
+					return "", "", ErrMisingDoubleQuote
+				}
+				keyParsed = true
+			} else {
+				if err := val.WriteByte(p.ch); err != nil {
+					return "", "", err
+				}
 			}
 			p.readChar()
-			keyParsed = true
 		default:
 			if !keyParsed {
 				if err := key.WriteByte(p.ch); err != nil {
 					return "", "", err
 				}
-				p.readChar()
 			} else {
 				if err := val.WriteByte(p.ch); err != nil {
 					return "", "", err
 				}
-				p.readChar()
 			}
+			p.readChar()
 		}
 	}
 }

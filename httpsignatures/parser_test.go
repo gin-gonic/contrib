@@ -9,25 +9,56 @@ import (
 
 func TestParser(t *testing.T) {
 	var tests = []struct {
+		name   string
 		input  string
 		params map[string]string
+		err    error
 	}{
 		{
-			input: `Signature keyId="rsa-key-1",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="Hello world"`,
+			name:  `Missing = character`,
+			input: `keyId="rsa-key-1",algorithm"rsa-sha256",headers="(request-target) host date digest",signature="Hello world"`,
+			err:   ErrMisingEqualCharacter,
+		},
+		{
+			name:  `Missing " at end value`,
+			input: `keyId="rsa-key-1",algorithm="rsa-sha256,headers="(request-target) host date digest",signature="Hello world"`,
+			err:   ErrUnterminatedParameter,
+		},
+		{
+			name:  `Missing " at begin value`,
+			input: `keyId="rsa-key-1",algorithm=rsa-sha256",headers="(request-target) host date digest",signature="Hello world"`,
+			err:   ErrMisingDoubleQuote,
+		},
+		{
+			name:  `empty value`,
+			input: `keyId="",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="Hello world"`,
 			params: map[string]string{
-				"keyId":     "rsa-key-1",
+				"keyId":     "",
 				"algorithm": "rsa-sha256",
 				"headers":   "(request-target) host date digest",
 				"signature": "Hello world",
 			},
+			err: nil,
+		},
+		{
+			name:  `correct test`,
+			input: `keyId="rsa-key-1",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ=="`,
+			params: map[string]string{
+				"keyId":     "rsa-key-1",
+				"algorithm": "rsa-sha256",
+				"headers":   "(request-target) host date digest",
+				"signature": "70AaN3BDO0XC9QbtgksgCy2jJvmOvshq8VmjSthdXC+sgcgrKrl9WME4DbZv4W7UZKElvCemhDLHQ1Nln9GMkQ==",
+			},
+			err: nil,
 		},
 	}
-
 	for _, tc := range tests {
-		p, err := newParser(tc.input)
-		require.NoError(t, err)
+		p := newParser(tc.input)
 		results, err := p.parse()
-		require.NoError(t, err)
-		assert.Equal(t, tc.params, results)
+		require.Equal(t, tc.err, err, tc.name)
+		if err != nil {
+			continue
+		}
+		assert.Equal(t, tc.params, results, tc.name)
 	}
 }

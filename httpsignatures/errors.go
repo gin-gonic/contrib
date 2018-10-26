@@ -27,4 +27,11 @@ var (
 	ErrMissingKeyID = errors.New("keyId must be on header")
 	//ErrMissingSignature error when signature not in header
 	ErrMissingSignature = errors.New("signature must be on header")
+
+	//ErrUnterminatedParameter err when could not parse value
+	ErrUnterminatedParameter = errors.New("Unterminated parameter")
+	//ErrMisingDoubleQuote err when after character = not have double quote
+	ErrMisingDoubleQuote = errors.New(`Missing " after = character`)
+	//ErrMisingEqualCharacter err when there is no character = before " or , character
+	ErrMisingEqualCharacter = errors.New(`Missing = character =`)
 )
