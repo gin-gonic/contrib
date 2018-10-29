@@ -9,6 +9,8 @@ import (
 	"net/http"
 )
 
+//TODO: support more digest
+
 //ErrInvalidDigest error when sha256 of body do not match with submitted digest
 var ErrInvalidDigest = errors.New("Sha256 of body is not match with digest")
 

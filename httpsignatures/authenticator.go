@@ -59,6 +59,7 @@ func NewAuthenticator(secretKeys Secrects, options ...Option) *Authenticator {
 	if a.validators == nil {
 		a.validators = []validator.Validator{
 			validator.NewDateValidator(),
+			validator.NewDigestValidator(),
 		}
 	}
 

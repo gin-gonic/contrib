@@ -72,7 +72,7 @@ func TestAuthenticatedHeaderNoSignature(t *testing.T) {
 	req, err := http.NewRequest("GET", "/", nil)
 	require.NoError(t, err)
 	c := runTest(secrets, requiredHeaders, nil, req)
-	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
+	assert.Equal(t, http.StatusUnauthorized, c.Writer.Status())
 	assert.Equal(t, c.Errors[0].Err, ErrNoSignature)
 }
 
@@ -81,7 +81,7 @@ func TestAuthenticatedHeaderInvalidSignature(t *testing.T) {
 	require.NoError(t, err)
 	req.Header.Set(authorizationHeader, "hello")
 	c := runTest(secrets, requiredHeaders, nil, req)
-	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
+	assert.Equal(t, http.StatusUnauthorized, c.Writer.Status())
 	assert.Equal(t, ErrInvalidAuthorizationHeader, c.Errors[0].Err)
 }
 
