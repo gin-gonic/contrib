@@ -1,4 +1,4 @@
-package httpsignatures
+package crypto
 
 import (
 	"crypto/hmac"
@@ -11,7 +11,8 @@ const algoHmacSha512 = "hmac-sha512"
 type HmacSha512 struct {
 }
 
-func (h *HmacSha512) sign(msg string, secret string) ([]byte, error) {
+// Sign return signing of input msg with secret string
+func (h *HmacSha512) Sign(msg string, secret string) ([]byte, error) {
 	mac := hmac.New(sha512.New, []byte(secret))
 	if _, err := mac.Write([]byte(msg)); err != nil {
 		return nil, err
@@ -19,6 +20,7 @@ func (h *HmacSha512) sign(msg string, secret string) ([]byte, error) {
 	return mac.Sum(nil), nil
 }
 
-func (h *HmacSha512) name() string {
+// Name return name of algorithim
+func (h *HmacSha512) Name() string {
 	return algoHmacSha512
 }

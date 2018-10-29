@@ -2,6 +2,8 @@ package httpsignatures
 
 import (
 	"fmt"
+	"github.com/gin-gonic/contrib/httpsignatures/crypto"
+	"github.com/gin-gonic/contrib/httpsignatures/validator"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -29,10 +31,11 @@ const (
 	requestBodySig         = "s8MEyer3dSpSsnL0+mQvUYgKm2S4AEX+hsvKmeNI7wgtLFplbCZtt8YOcySZrCyYbOJdPF1NASDHfupSuekecg=="
 	requestHost            = "kyber.network"
 	requestHostSig         = "+qpk6uAlILo/1YV1ZDK2suU46fbaRi5guOyg4b6aS4nWqLi9u57V6mVwQNh0s6OpfrVZwAYaWHCmQFCgJiZ6yg=="
+	algoHmacSha512         = "hmac-sha512"
 )
 
 var (
-	hmacsha512 = &HmacSha512{}
+	hmacsha512 = &crypto.HmacSha512{}
 	secrets    = Secrects{
 		readID: &Secret{
 			Key:       "1234",
@@ -46,13 +49,10 @@ var (
 	requiredHeaders = []string{"(request-target)", "date", "digest"}
 	submitHeader    = []string{"(request-target)", "date", "digest"}
 	submitHeader2   = []string{"(request-target)", "date", "digest", "host"}
-	validators      = []Validator{
-		NewDateValidator(),
-	}
-	requestTime = time.Date(2018, time.October, 22, 07, 00, 07, 00, time.UTC)
+	requestTime     = time.Date(2018, time.October, 22, 07, 00, 07, 00, time.UTC)
 )
 
-func runTest(secretKeys Secrects, headers []string, v []Validator, req *http.Request) *gin.Context {
+func runTest(secretKeys Secrects, headers []string, v []validator.Validator, req *http.Request) *gin.Context {
 	gin.SetMode(gin.TestMode)
 	auth := NewAuthenticator(secretKeys, WithRequiredHeaders(headers), WithValidator(v))
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
@@ -71,70 +71,76 @@ func generateSignature(keyID KeyID, algorithm string, headers []string, signatur
 func TestAuthenticatedHeaderNoSignature(t *testing.T) {
 	req, err := http.NewRequest("GET", "/", nil)
 	require.NoError(t, err)
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
 	assert.Equal(t, c.Errors[0].Err, ErrNoSignature)
 }
 
 func TestAuthenticatedHeaderInvalidSignature(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	req.Header.Set(authorizationHeader, "hello")
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
 	assert.Equal(t, ErrInvalidAuthorizationHeader, c.Errors[0].Err)
 }
 
 func TestAuthenticatedHeaderWrongKey(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(invalidKeyID, algoHmacSha512, submitHeader, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", time.Now().UTC().Format(http.TimeFormat))
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
 	assert.Equal(t, ErrInvalidKeyID, c.Errors[0].Err)
 }
 
 func TestAuthenticateDateNotAccept(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", time.Date(1990, time.October, 20, 0, 0, 0, 0, time.UTC).Format(http.TimeFormat))
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
-	assert.Equal(t, ErrDateNotInRange, c.Errors[0].Err)
+	assert.Equal(t, validator.ErrDateNotInRange, c.Errors[0].Err)
 }
 
 func TestAuthenticateInvalidRequiredHeader(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	invalidRequiredHeaders := []string{"date"}
 	sigHeader := generateSignature(readID, algoHmacSha512, invalidRequiredHeaders, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 
 	req.Header.Set("Date", time.Now().UTC().Format(http.TimeFormat))
 
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
 	assert.Equal(t, ErrHeaderNotEnough, c.Errors[0].Err)
 }
 
 func TestAuthenticateInvalidAlgo(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, invaldAlgo, submitHeader, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", time.Now().UTC().Format(http.TimeFormat))
 
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusBadRequest, c.Writer.Status())
 	assert.Equal(t, ErrIncorrectAlgorithm, c.Errors[0].Err)
 }
 
 func TestInvalidSign(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", time.Now().UTC().Format(http.TimeFormat))
 
-	c := runTest(secrets, requiredHeaders, validators, req)
+	c := runTest(secrets, requiredHeaders, nil, req)
 	assert.Equal(t, http.StatusUnauthorized, c.Writer.Status())
 	assert.Equal(t, c.Errors[0].Err, ErrInvalidSign)
 }
@@ -144,9 +150,9 @@ type dateAlwaysValid struct{}
 
 func (v *dateAlwaysValid) Validate(r *http.Request) error { return nil }
 
-var mockValidator = []Validator{
+var mockValidator = []validator.Validator{
 	&dateAlwaysValid{},
-	NewDigestValidator(),
+	validator.NewDigestValidator(),
 }
 
 func httpTestGet(c *gin.Context) {
@@ -171,7 +177,8 @@ func TestHttpInvalidRequest(t *testing.T) {
 	r.Use(auth.Authenticated())
 	r.GET("/", httpTestGet)
 
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", requestTime.Format(http.TimeFormat))
@@ -191,7 +198,7 @@ func TestHttpInvalidDigest(t *testing.T) {
 	r.POST("/", httpTestPost)
 
 	req, err := http.NewRequest("POST", "/", strings.NewReader(sampleBodyContent))
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", requestTime.Format(http.TimeFormat))
@@ -211,7 +218,8 @@ func TestHttpValidRequest(t *testing.T) {
 	r.Use(auth.Authenticated())
 	r.GET("/", httpTestGet)
 
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestNilBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", requestTime.Format(http.TimeFormat))
@@ -231,7 +239,7 @@ func TestHttpValidRequestBody(t *testing.T) {
 	r.POST("/", httpTestPost)
 
 	req, err := http.NewRequest("POST", "/", strings.NewReader(sampleBodyContent))
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	sigHeader := generateSignature(readID, algoHmacSha512, submitHeader, requestBodySig)
 	req.Header.Set(authorizationHeader, sigHeader)
 	req.Header.Set("Date", requestTime.Format(http.TimeFormat))

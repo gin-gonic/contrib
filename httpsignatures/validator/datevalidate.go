@@ -1,11 +1,15 @@
-package httpsignatures
+package validator
 
 import (
+	"errors"
 	"net/http"
 	"time"
 )
 
 const maxTimeGap = 30 * time.Second // 30 secs
+
+//ErrDateNotInRange error when date not in aceptable range
+var ErrDateNotInRange = errors.New("Date submit is not in aceptable range")
 
 // DateValidator checking validate by time range
 type DateValidator struct {
@@ -23,7 +27,7 @@ func NewDateValidator() *DateValidator {
 
 // Validate return error when checking if header date is valid or not
 func (v *DateValidator) Validate(r *http.Request) error {
-	t, err := http.ParseTime(r.Header.Get("Date"))
+	t, err := http.ParseTime(r.Header.Get("date"))
 	if err != nil {
 		return err
 	}

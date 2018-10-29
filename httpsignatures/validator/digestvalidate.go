@@ -1,14 +1,16 @@
-package httpsignatures
+package validator
 
 import (
-	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 )
+
+//ErrInvalidDigest error when sha256 of body do not match with submitted digest
+var ErrInvalidDigest = errors.New("Sha256 of body is not match with digest")
 
 // DigestValidator checking digest in header match body
 type DigestValidator struct {
@@ -33,21 +35,18 @@ func (v *DigestValidator) Validate(r *http.Request) error {
 }
 
 func calculateDigest(r *http.Request) (string, error) {
-	if r.Body == nil {
+	if r.ContentLength == 0 {
 		return "", nil
 	}
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := r.GetBody()
 	if err != nil {
-		if err == io.EOF {
-			return "", nil
-		}
 		return "", err
 	}
-	r.Body.Close()
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-
 	h := sha256.New()
-	h.Write(body)
+	_, err = io.Copy(h, body)
+	if err != nil {
+		return "", err
+	}
 	digest := fmt.Sprintf("SHA-256=%s", base64.StdEncoding.EncodeToString(h.Sum(nil)))
 	return digest, nil
 }

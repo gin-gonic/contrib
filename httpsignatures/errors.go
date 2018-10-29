@@ -9,14 +9,12 @@ var (
 	ErrInvalidAuthorizationHeader = errors.New("Authorization header format is incorrect")
 	//ErrInvalidKeyID error when KeyID in header is not provided
 	ErrInvalidKeyID = errors.New("Invalid keyId")
-	//ErrDateNotInRange error when date not in aceptable range
-	ErrDateNotInRange = errors.New("Date submit is not in aceptable range")
+	//ErrDateNotFound error when no date in header
+	ErrDateNotFound = errors.New("There is no Date on Headers")
 	//ErrIncorrectAlgorithm error when Algorithm in header is not match with secret key
 	ErrIncorrectAlgorithm = errors.New("Algorithm is not match")
 	//ErrHeaderNotEnough error when requiremts header do not appear on heder field
 	ErrHeaderNotEnough = errors.New("Header feild is not match requirement")
-	//ErrInvalidDigest error when sha256 of body do not match with submitted digest
-	ErrInvalidDigest = errors.New("Sha256 of body is not match with digest")
 	// ErrNoSignature error when no Signature not found in header
 	ErrNoSignature = errors.New("No Signature header found in request")
 	//ErrInvalidSign error when signing string do not match

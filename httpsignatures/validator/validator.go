@@ -1,4 +1,4 @@
-package httpsignatures
+package validator
 
 import (
 	"net/http"

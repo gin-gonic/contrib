@@ -9,7 +9,10 @@ const (
 	authorizationHeader           = "Authorization"
 	authorizationHeaderInitString = "Signature "
 	signatureHeader               = "Signature"
-	requestTarget                 = "(request-target)"
+	signingKeyID                  = "keyId"
+	signingAlgorithm              = "algorithm"
+	signingSignature              = "signature"
+	signingHeaders                = "headers"
 )
 
 //SignatureHeader contains basic info signature header
@@ -22,49 +25,46 @@ type SignatureHeader struct {
 
 //NewSignatureHeader new instace of SignatureHeader
 func NewSignatureHeader(r *http.Request) (*SignatureHeader, error) {
-	keyID, signature, headers, algorithm, err := parseHTTPRequest(r)
-	if err != nil {
-		return nil, err
-	}
-	return &SignatureHeader{
-		keyID:     KeyID(keyID),
-		headers:   headers,
-		signature: signature,
-		algorithm: algorithm,
-	}, nil
+	return parseHTTPRequest(r)
 }
 
-func parseHTTPRequest(r *http.Request) (keyID string, signature string, headers []string, algorithm string, err error) {
+func parseHTTPRequest(r *http.Request) (*SignatureHeader, error) {
 	s, err := getSignatureString(r)
 	if err != nil {
-		return keyID, signature, headers, algorithm, err
+		return nil, err
 	}
 	return parseSignatureString(s)
 }
 
-func parseSignatureString(s string) (keyID string, signature string, headers []string, algorithm string, err error) {
+func parseSignatureString(s string) (*SignatureHeader, error) {
 	p := newParser(s)
 	results, err := p.parse()
 	if err != nil {
-		return keyID, signature, headers, algorithm, err
+		return nil, err
 	}
-	keyID, ok := results["keyId"]
+	keyID, ok := results[signingKeyID]
 	if !ok {
-		return keyID, signature, headers, algorithm, ErrMissingKeyID
+		return nil, ErrMissingKeyID
 	}
-	signature, ok = results["signature"]
+	signature, ok := results[signingSignature]
 	if !ok {
-		return keyID, signature, headers, algorithm, ErrMissingSignature
+		return nil, ErrMissingSignature
 	}
-	headerString, ok := results["headers"]
+	headerString, ok := results[signingHeaders]
+	var headers []string
 	if !ok || len(headerString) == 0 {
 		headers = []string{"date"}
 	} else {
 		headers = strings.Split(headerString, " ")
 	}
-	algorithm, _ = results["algorithm"]
+	algorithm, _ := results[signingAlgorithm]
 
-	return keyID, signature, headers, algorithm, nil
+	return &SignatureHeader{
+		keyID:     KeyID(keyID),
+		signature: signature,
+		headers:   headers,
+		algorithm: algorithm,
+	}, nil
 }
 
 func getSignatureString(r *http.Request) (string, error) {

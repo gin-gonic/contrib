@@ -7,15 +7,23 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gin-gonic/contrib/httpsignatures/validator"
 	"github.com/gin-gonic/gin"
 )
 
-var defaultRequiredHeaders = []string{requestTarget, "date", "digest"}
+const (
+	requestTarget = "(request-target)"
+	date          = "date"
+	digest        = "digest"
+	host          = "host"
+)
+
+var defaultRequiredHeaders = []string{requestTarget, date, digest}
 
 // Authenticator is the gin authenticator middleware.
 type Authenticator struct {
 	secrets    Secrects
-	validators []Validator
+	validators []validator.Validator
 	headers    []string
 }
 
@@ -24,7 +32,7 @@ type Option func(*Authenticator)
 
 // WithValidator configures the Authenticator to use custom validator.
 // The default validator is timestamp based.
-func WithValidator(validators []Validator) Option {
+func WithValidator(validators []validator.Validator) Option {
 	return func(a *Authenticator) {
 		a.validators = validators
 	}
@@ -49,8 +57,8 @@ func NewAuthenticator(secretKeys Secrects, options ...Option) *Authenticator {
 	}
 
 	if a.validators == nil {
-		a.validators = []Validator{
-			NewDateValidator(),
+		a.validators = []validator.Validator{
+			validator.NewDateValidator(),
 		}
 	}
 
@@ -66,7 +74,7 @@ func (a *Authenticator) Authenticated() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sigHeader, err := NewSignatureHeader(c.Request)
 		if err != nil {
-			c.AbortWithError(http.StatusBadRequest, err)
+			c.AbortWithError(http.StatusUnauthorized, err)
 			return
 		}
 		for _, v := range a.validators {
@@ -86,7 +94,7 @@ func (a *Authenticator) Authenticated() gin.HandlerFunc {
 			return
 		}
 		signString := constructSignMessage(c.Request, sigHeader.headers)
-		signature, err := secret.Algorithm.sign(signString, secret.Key)
+		signature, err := secret.Algorithm.Sign(signString, secret.Key)
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
@@ -123,7 +131,7 @@ func (a *Authenticator) getSecret(keyID KeyID, algorithm string) (*Secret, error
 		return nil, ErrInvalidKeyID
 	}
 
-	if secret.Algorithm.name() != algorithm {
+	if secret.Algorithm.Name() != algorithm {
 		if algorithm != "" {
 			return nil, ErrIncorrectAlgorithm
 		}
@@ -136,9 +144,9 @@ func constructSignMessage(r *http.Request, headers []string) string {
 	for i, field := range headers {
 		var fieldValue string
 		switch field {
-		case "host":
+		case host:
 			fieldValue = r.Host
-		case "(request-target)":
+		case requestTarget:
 			fieldValue = fmt.Sprintf("%s %s", strings.ToLower(r.Method), r.URL.RequestURI())
 		default:
 			fieldValue = r.Header.Get(field)
