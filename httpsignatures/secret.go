@@ -11,5 +11,5 @@ type Secret struct {
 	Algorithm crypto.Crypto
 }
 
-// Secrects map with keyID and secret
-type Secrects map[KeyID]*Secret
+// Secrets map with keyID and secret
+type Secrets map[KeyID]*Secret
