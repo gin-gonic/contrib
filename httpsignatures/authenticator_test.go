@@ -11,12 +11,10 @@ import (
 
 	"github.com/gin-gonic/contrib/httpsignatures/crypto"
 	"github.com/gin-gonic/contrib/httpsignatures/validator"
-
-	"github.com/stretchr/testify/require"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
