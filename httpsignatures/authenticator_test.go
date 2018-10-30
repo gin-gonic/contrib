@@ -2,14 +2,15 @@ package httpsignatures
 
 import (
 	"fmt"
-	"github.com/gin-gonic/contrib/httpsignatures/crypto"
-	"github.com/gin-gonic/contrib/httpsignatures/validator"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/gin-gonic/contrib/httpsignatures/crypto"
+	"github.com/gin-gonic/contrib/httpsignatures/validator"
 
 	"github.com/stretchr/testify/require"
 
@@ -36,7 +37,7 @@ const (
 
 var (
 	hmacsha512 = &crypto.HmacSha512{}
-	secrets    = Secrects{
+	secrets    = Secrets{
 		readID: &Secret{
 			Key:       "1234",
 			Algorithm: hmacsha512,
@@ -52,7 +53,7 @@ var (
 	requestTime     = time.Date(2018, time.October, 22, 07, 00, 07, 00, time.UTC)
 )
 
-func runTest(secretKeys Secrects, headers []string, v []validator.Validator, req *http.Request) *gin.Context {
+func runTest(secretKeys Secrets, headers []string, v []validator.Validator, req *http.Request) *gin.Context {
 	gin.SetMode(gin.TestMode)
 	auth := NewAuthenticator(secretKeys, WithRequiredHeaders(headers), WithValidator(v))
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())

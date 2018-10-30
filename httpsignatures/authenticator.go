@@ -22,7 +22,7 @@ var defaultRequiredHeaders = []string{requestTarget, date, digest}
 
 // Authenticator is the gin authenticator middleware.
 type Authenticator struct {
-	secrets    Secrects
+	secrets    Secrets
 	validators []validator.Validator
 	headers    []string
 }
@@ -49,7 +49,7 @@ func WithRequiredHeaders(headers []string) Option {
 
 // NewAuthenticator creates a new Authenticator instance with
 // given allowed permissions and required header and secret keys.
-func NewAuthenticator(secretKeys Secrects, options ...Option) *Authenticator {
+func NewAuthenticator(secretKeys Secrets, options ...Option) *Authenticator {
 	var a = &Authenticator{secrets: secretKeys}
 
 	for _, fn := range options {
