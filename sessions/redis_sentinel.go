@@ -1,8 +1,8 @@
 package sessions
 
 import (
-	"github.com/boj/redistore"
 	"github.com/gorilla/sessions"
+	"github.com/uriwang/redistore"
 )
 
 // NewRedisStoreWithSentinel create redis sentinel store
@@ -25,5 +25,19 @@ func NewRedisStoreWithSentinel(address []string, size int, masterName, network, 
 	if err != nil {
 		return nil, err
 	}
-	return &redisStore{store}, nil
+	return &redisSentinelStore{store}, nil
+}
+
+type redisSentinelStore struct {
+	*redistore.RediStore
+}
+
+func (c *redisSentinelStore) Options(options Options) {
+	c.RediStore.Options = &sessions.Options{
+		Path:     options.Path,
+		Domain:   options.Domain,
+		MaxAge:   options.MaxAge,
+		Secure:   options.Secure,
+		HttpOnly: options.HttpOnly,
+	}
 }
