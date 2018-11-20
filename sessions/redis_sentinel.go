@@ -2,7 +2,7 @@ package sessions
 
 import (
 	"github.com/gorilla/sessions"
-	"github.com/holmeswang/redistore"
+	"github.com/boj/redistore"
 )
 
 // NewRedisStoreWithSentinel create redis sentinel store
