@@ -41,6 +41,7 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
 + [gin-access-limit](https://github.com/bu/gin-access-limit) - An access-control middleware by specifying allowed source CIDR notations.
++ [gin-session](https://github.com/go-session/gin-session) - Session middleware for Gin
 + [gin-stats](https://github.com/semihalev/gin-stats) - Lightweight and useful request metrics middleware
 + [gin-statsd](https://github.com/amalfra/gin-statsd) - A Gin middleware for reporting to statsd deamon
 + [gin-health-check](https://github.com/RaMin0/gin-health-check) - A health check middleware for Gin
