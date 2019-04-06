@@ -27,6 +27,7 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-location](https://github.com/drone/gin-location) - middleware for exposing the server's hostname and scheme
 + [gin-nice-recovery](https://github.com/ekyoung/gin-nice-recovery) - panic recovery middleware that let's you build a nicer user experience
 + [gin-limit](https://github.com/aviddiviner/gin-limit) - limits simultaneous requests; can help with high traffic load
++ [gin-limit-by-key](https://github.com/yangxikun/gin-limit-by-key) - An in-memory middleware to limit access rate by custom key and rate.
 + [ez-gin-template](https://github.com/michelloworld/ez-gin-template) - easy template wrap for gin
 + [gin-hydra](https://github.com/janekolszak/gin-hydra) - [Hydra](https://github.com/ory-am/hydra) middleware for Gin
 + [gin-glog](https://github.com/zalando/gin-glog) - meant as drop-in replacement for Gin's default logger
