@@ -48,3 +48,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-session-middleware](https://github.com/go-session/gin-session) - A efficient, safely and easy-to-use session library for Go.
 + [ginception](https://github.com/kubastick/ginception) - Nice looking exception page
 + [gin-inspector](https://github.com/fatihkahveci/gin-inspector) - Gin middleware for investigating http request.
++ [gin-dump](https://github.com/tpkeeper/gin-dump) - Gin middleware/handler to dump header/body of request and response. Very helpful for debugging your applications.
