@@ -6,11 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Auth(secret string) gin.HandlerFunc {
+func Auth(secret interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		_, err := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt_lib.Token) (interface{}, error) {
-			b := ([]byte(secret))
-			return b, nil
+			return secret, nil
 		})
 
 		if err != nil {
