@@ -8,12 +8,15 @@ import (
 
 func Auth(secret interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_, err := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt_lib.Token) (interface{}, error) {
+		token, err := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt_lib.Token) (interface{}, error) {
 			return secret, nil
 		})
 
 		if err != nil {
 			c.AbortWithError(401, err)
+		}
+		if c, ok := token.Claims.(MapClaims); ok {
+			c.Set("JWT", c)
 		}
 	}
 }
