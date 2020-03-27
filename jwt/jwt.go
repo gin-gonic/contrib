@@ -15,7 +15,7 @@ func Auth(secret interface{}) gin.HandlerFunc {
 		if err != nil {
 			c.AbortWithError(401, err)
 		}
-		if c, ok := token.Claims.(MapClaims); ok {
+		if c, ok := token.Claims.(jwt_lib.MapClaims); ok {
 			c.Set("JWT", c)
 		}
 	}
