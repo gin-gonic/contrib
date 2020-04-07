@@ -54,6 +54,12 @@ func shouldCompress(req *http.Request) bool {
 	if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
 		return false
 	}
+	
+	// Prometheus reg /metrics No compression
+	if req.RequestURI == "/metrics" {
+		return false
+	}
+	
 	extension := filepath.Ext(req.URL.Path)
 	if len(extension) < 4 { // fast path
 		return true
