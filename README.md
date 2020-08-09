@@ -26,6 +26,7 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-sessions](https://github.com/kimiazhu/ginweb-contrib/tree/master/sessions) - session middleware based on mongodb and mysql
 + [gin-location](https://github.com/drone/gin-location) - middleware for exposing the server's hostname and scheme
 + [gin-nice-recovery](https://github.com/ekyoung/gin-nice-recovery) - panic recovery middleware that let's you build a nicer user experience
++ [gin-limiter](https://github.com/davidleitw/gin-limiter) - A simple gin middleware for ip limiter based on redis.
 + [gin-limit](https://github.com/aviddiviner/gin-limit) - limits simultaneous requests; can help with high traffic load
 + [gin-limit-by-key](https://github.com/yangxikun/gin-limit-by-key) - An in-memory middleware to limit access rate by custom key and rate.
 + [ez-gin-template](https://github.com/michelloworld/ez-gin-template) - easy template wrap for gin
