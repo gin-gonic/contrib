@@ -55,3 +55,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-go-metrics](https://github.com/bmc-toolbox/gin-go-metrics) - Gin middleware to gather and store metrics using [rcrowley/go-metrics](https://github.com/rcrowley/go-metrics)
 + [ginrpc](https://github.com/xxjwxc/ginrpc) - Gin middleware/handler auto binding tools. support object register by annotated route like beego
 + [goscope](https://github.com/averageflow/goscope) - Watch incoming requests, outgoing responses and logs of your Gin application with this plug and play middleware inspired by Laravel Telescope.
++ [logging](https://github.com/axiaoxin-com/logging#gin-middleware-ginlogger) - logging provide GinLogger uses zap to log detailed access logs in JSON or text format with trace id, supports flexible and rich configuration, and supports automatic reporting of log events above error level to sentry
