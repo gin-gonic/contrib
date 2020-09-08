@@ -1,8 +1,10 @@
 package nocache
 
-import "time"
+import (
+	"time"
 
-import "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+)
 
 // Unix epoch time
 var epoch = time.Unix(0, 0).Format(time.RFC1123)
