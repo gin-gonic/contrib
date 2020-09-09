@@ -14,7 +14,9 @@ func TestNoCache(t *testing.T) {
 	g := gin.New()
 	g.Use(NoCache())
 	g.GET("/test", func(c *gin.Context) {
-		c.JSON(200, "test")
+		c.JSON(200, gin.H{
+			"test": "test",
+		})
 	})
 	g.ServeHTTP(w, r)
 
