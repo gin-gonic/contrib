@@ -16,7 +16,7 @@ func main() {
     g.Use(nocache.NoCache())
     g.GET("/", func(c *gin.Context) {
         c.JSON(200, gin.H{
-            "status": "It will not be cached",
+            "result": "It will not be cached",
         })
     })
 }
