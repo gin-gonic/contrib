@@ -18,6 +18,7 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [RestGate](https://github.com/pjebs/restgate) - Secure authentication for REST API endpoints
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
 + [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
++ [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
 + [gin-csrf](https://github.com/utrack/gin-csrf) - CSRF protection
 + [gin-health](https://github.com/utrack/gin-health) - middleware that simplifies stat reporting via [gocraft/health](https://github.com/gocraft/health)
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
@@ -55,3 +56,4 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [gin-go-metrics](https://github.com/bmc-toolbox/gin-go-metrics) - Gin middleware to gather and store metrics using [rcrowley/go-metrics](https://github.com/rcrowley/go-metrics)
 + [ginrpc](https://github.com/xxjwxc/ginrpc) - Gin middleware/handler auto binding tools. support object register by annotated route like beego
 + [goscope](https://github.com/averageflow/goscope) - Watch incoming requests, outgoing responses and logs of your Gin application with this plug and play middleware inspired by Laravel Telescope.
++ [gin-nocache](https://github.com/alexander-melentyev/gin-nocache) - NoCache is a simple piece of middleware that sets a number of HTTP headers to prevent a router (or subrouter) from being cached by an upstream proxy and/or client.
