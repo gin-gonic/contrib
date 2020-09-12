@@ -18,7 +18,6 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [RestGate](https://github.com/pjebs/restgate) - Secure authentication for REST API endpoints
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
 + [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
-+ [gin-cors](https://github.com/gin-contrib/cors) - Official CORS gin's middleware
 + [gin-csrf](https://github.com/utrack/gin-csrf) - CSRF protection
 + [gin-health](https://github.com/utrack/gin-health) - middleware that simplifies stat reporting via [gocraft/health](https://github.com/gocraft/health)
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
