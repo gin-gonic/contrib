@@ -56,3 +56,5 @@ Each author is responsible of maintaining his own code, although if you submit a
 + [ginrpc](https://github.com/xxjwxc/ginrpc) - Gin middleware/handler auto binding tools. support object register by annotated route like beego
 + [goscope](https://github.com/averageflow/goscope) - Watch incoming requests, outgoing responses and logs of your Gin application with this plug and play middleware inspired by Laravel Telescope.
 + [gin-nocache](https://github.com/alexander-melentyev/gin-nocache) - NoCache is a simple piece of middleware that sets a number of HTTP headers to prevent a router (or subrouter) from being cached by an upstream proxy and/or client.
++ [logging](https://github.com/axiaoxin-com/logging#gin-middleware-ginlogger) - logging provide GinLogger uses zap to log detailed access logs in JSON or text format with trace id, supports flexible and rich configuration, and supports automatic reporting of log events above error level to sentry
++ [ratelimiter](https://github.com/axiaoxin-com/ratelimiter) - Gin middleware for token bucket ratelimiter.
