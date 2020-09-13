@@ -104,7 +104,7 @@ func (c *RedisStore) Delete(key string) error {
 func (c *RedisStore) Increment(key string, delta uint64) (uint64, error) {
 	conn := c.pool.Get()
 	defer conn.Close()
-	// Check for existance *before* increment as per the cache contract.
+	// Check for existence *before* increment as per the cache contract.
 	// redis will auto create the key, and we don't want that. Since we need to do increment
 	// ourselves instead of natively via INCRBY (redis doesn't support wrapping), we get the value
 	// and do the exists check this way to minimize calls to Redis

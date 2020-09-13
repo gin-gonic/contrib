@@ -51,8 +51,8 @@ func data_index_html() ([]byte, error) {
 // It returns an error if the asset could not be found or
 // could not be loaded.
 func Asset(name string) ([]byte, error) {
-	cannonicalName := strings.Replace(name, "\\", "/", -1)
-	if f, ok := _bindata[cannonicalName]; ok {
+	canonicalName := strings.Replace(name, "\\", "/", -1)
+	if f, ok := _bindata[canonicalName]; ok {
 		return f()
 	}
 	return nil, fmt.Errorf("Asset %s not found", name)
@@ -85,8 +85,8 @@ var _bindata = map[string]func() ([]byte, error){
 // AssetDir("data/img") would return []string{"a.png", "b.png"}
 // AssetDir("foo.txt") and AssetDir("notexist") would return an error
 func AssetDir(name string) ([]string, error) {
-	cannonicalName := strings.Replace(name, "\\", "/", -1)
-	pathList := strings.Split(cannonicalName, "/")
+	canonicalName := strings.Replace(name, "\\", "/", -1)
+	pathList := strings.Split(canonicalName, "/")
 	node := _bintree
 	for _, p := range pathList {
 		node = node.Children[p]

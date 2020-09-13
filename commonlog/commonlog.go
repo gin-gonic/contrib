@@ -16,7 +16,7 @@ func New() gin.HandlerFunc {
 	return NewWithWriter(gin.DefaultWriter)
 }
 
-// Instance a Logger middleware with the specified writter buffer.
+// Instance a Logger middleware with the specified writer buffer.
 // Example: os.Stdout, a file opened in write mode, a socket...
 func NewWithWriter(out io.Writer) gin.HandlerFunc {
 	pool := &sync.Pool{
