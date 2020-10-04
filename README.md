@@ -39,7 +39,7 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-helmet](https://github.com/danielkov/gin-helmet) - Collection of simple security middleware.
 + [gin-jwt-session](https://github.com/ScottHuangZL/gin-jwt-session) - middleware to provide JWT/Session/Flashes, easy to use while also provide options for adjust if necessary. Provide sample too.
 + [gin-template](https://github.com/foolin/gin-template) - Easy and simple to use html/template for gin framework.
-+ [pongo2gin(https://github.com/stnc/pongo2gin) - Package pongo2gin is a template renderer that can be used with the Gin web framework [pongo2 like django templates]
++ [pongo2gin] (https://github.com/stnc/pongo2gin) - Package pongo2gin is a template renderer that can be used with the Gin web framework "pongo2 like django templates"
 + [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
 + [gin-access-limit](https://github.com/bu/gin-access-limit) - An access-control middleware by specifying allowed source CIDR notations.
