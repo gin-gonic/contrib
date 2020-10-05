@@ -131,7 +131,7 @@ func (c *RedisStore) Increment(key string, delta uint64) (uint64, error) {
 func (c *RedisStore) Decrement(key string, delta uint64) (newValue uint64, err error) {
 	conn := c.pool.Get()
 	defer conn.Close()
-	// Check for existance *before* increment as per the cache contract.
+	// Check for existence *before* increment as per the cache contract.
 	// redis will auto create the key, and we don't want that, hence the exists call
 	if !exists(conn, key) {
 		return 0, ErrCacheMiss
