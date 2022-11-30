@@ -1,2 +1,5 @@
 */Godeps/*
 !*/Godeps/Godeps.json
+go.mod
+go.sum
+.idea
