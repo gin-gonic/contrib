@@ -22,6 +22,7 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-health](https://github.com/utrack/gin-health) - middleware that simplifies stat reporting via [gocraft/health](https://github.com/gocraft/health)
 + [gin-merry](https://github.com/utrack/gin-merry) - middleware for pretty-printing [merry](https://github.com/ansel1/merry) errors with context
 + [gin-revision](https://github.com/appleboy/gin-revision-middleware) - Revision middleware for Gin framework
++ [gin-sentinel](https://github.com/Opur/gin-sentinel) - Reliability & Resilience Middleware with [sentinel-golang](https://github.com/alibaba/sentinel-golang)
 + [gin-jwt](https://github.com/appleboy/gin-jwt) - JWT Middleware for Gin Framework
 + [gin-sessions](https://github.com/kimiazhu/ginweb-contrib/tree/master/sessions) - session middleware based on mongodb and mysql
 + [gin-location](https://github.com/drone/gin-location) - middleware for exposing the server's hostname and scheme
