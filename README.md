@@ -58,5 +58,6 @@ Each author is responsible for maintaining their own code, although if you submi
 + [logging](https://github.com/axiaoxin-com/logging#gin-middleware-ginlogger) - logging provide GinLogger uses zap to log detailed access logs in JSON or text format with trace id, supports flexible and rich configuration, and supports automatic reporting of log events above error level to sentry
 + [ratelimiter](https://github.com/axiaoxin-com/ratelimiter) - Gin middleware for token bucket ratelimiter.
 + [servefiles](https://github.com/rickb777/servefiles) - serving static files with performance-enhancing cache control headers; also handles gzip & brotli compressed files 
++ [gin-brotli](https://github.com/anargu/gin-brotli) - Gin middleware to enable Brotli compression
 + [gin-jwt-cognito](https://github.com/akhettar/gin-jwt-cognito) - validate jwt tokens issued by [amazon cognito](https://aws.amazon.com/cognito/)
 + [gin-pagination](https://github.com/webstradev/gin-pagination) - A simple and customizable pagination middleware for Gin
