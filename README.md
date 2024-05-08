@@ -39,7 +39,7 @@ Each author is responsible for maintaining their own code, although if you submi
 + [xss-mw](https://github.com/dvwright/xss-mw) - XssMw is a middleware designed to "auto remove XSS" from user submitted input
 + [gin-helmet](https://github.com/danielkov/gin-helmet) - Collection of simple security middleware.
 + [gin-jwt-session](https://github.com/ScottHuangZL/gin-jwt-session) - middleware to provide JWT/Session/Flashes, easy to use while also provide options for adjust if necessary. Provide sample too.
-+ [gin-template](https://github.com/foolin/gin-template) - Easy and simple to use html/template for gin framework.
++ [goview](https://github.com/foolin/goview) - a lightweight, minimalist and idiomatic template library
 + [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
 + [gin-access-limit](https://github.com/bu/gin-access-limit) - An access-control middleware by specifying allowed source CIDR notations.
@@ -55,8 +55,6 @@ Each author is responsible for maintaining their own code, although if you submi
 + [ginprom](https://github.com/chenjiandongx/ginprom) - Prometheus metrics exporter for Gin
 + [gin-go-metrics](https://github.com/bmc-toolbox/gin-go-metrics) - Gin middleware to gather and store metrics using [rcrowley/go-metrics](https://github.com/rcrowley/go-metrics)
 + [ginrpc](https://github.com/xxjwxc/ginrpc) - Gin middleware/handler auto binding tools. support object register by annotated route like beego
-+ [goscope](https://github.com/averageflow/goscope) - Watch incoming requests, outgoing responses and logs of your Gin application with this plug and play middleware inspired by Laravel Telescope.
-+ [gin-nocache](https://github.com/alexander-melentyev/gin-nocache) - NoCache is a simple piece of middleware that sets a number of HTTP headers to prevent a router (or subrouter) from being cached by an upstream proxy and/or client.
 + [logging](https://github.com/axiaoxin-com/logging#gin-middleware-ginlogger) - logging provide GinLogger uses zap to log detailed access logs in JSON or text format with trace id, supports flexible and rich configuration, and supports automatic reporting of log events above error level to sentry
 + [ratelimiter](https://github.com/axiaoxin-com/ratelimiter) - Gin middleware for token bucket ratelimiter.
 + [servefiles](https://github.com/rickb777/servefiles) - serving static files with performance-enhancing cache control headers; also handles gzip & brotli compressed files 
