@@ -15,7 +15,7 @@ Each author is responsible for maintaining their own code, although if you submi
   
 ## List of external middleware
 
-+ [nameOfMiddleware](https://github.com/diegoclair/goswag) - Wrapper to create swagger docs easily from your endpoints 
++ [goswag](https://github.com/diegoclair/goswag) - Wrapper to create swagger docs easily from your endpoints 
 + [RestGate](https://github.com/pjebs/restgate) - Secure authentication for REST API endpoints
 + [staticbin](https://github.com/olebedev/staticbin) - middleware/handler for serving static files from binary data
 + [gin-cachecontrol](https://github.com/joeig/gin-cachecontrol) - Cache-Control middleware
