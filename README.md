@@ -40,6 +40,7 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-helmet](https://github.com/danielkov/gin-helmet) - Collection of simple security middleware.
 + [gin-jwt-session](https://github.com/ScottHuangZL/gin-jwt-session) - middleware to provide JWT/Session/Flashes, easy to use while also provide options for adjust if necessary. Provide sample too.
 + [goview](https://github.com/foolin/goview) - a lightweight, minimalist and idiomatic template library
++ [ginvalidator](https://github.com/bube054/ginvalidator) - A robust and lightweight validation middleware for the Gin framework, simplifying input validation with customizable rules and error handling.
 + [gin-redis-ip-limiter](https://github.com/Salvatore-Giordano/gin-redis-ip-limiter) - Request limiter based on ip address. It works with redis and with a sliding-window mechanism.
 + [gin-method-override](https://github.com/bu/gin-method-override) - Method override by POST form param `_method`, inspired by Ruby's same name rack
 + [gin-access-limit](https://github.com/bu/gin-access-limit) - An access-control middleware by specifying allowed source CIDR notations.
