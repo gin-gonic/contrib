@@ -56,6 +56,7 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-go-metrics](https://github.com/bmc-toolbox/gin-go-metrics) - Gin middleware to gather and store metrics using [rcrowley/go-metrics](https://github.com/rcrowley/go-metrics)
 + [ginrpc](https://github.com/xxjwxc/ginrpc) - Gin middleware/handler auto binding tools. support object register by annotated route like beego
 + [logging](https://github.com/axiaoxin-com/logging#gin-middleware-ginlogger) - logging provide GinLogger uses zap to log detailed access logs in JSON or text format with trace id, supports flexible and rich configuration, and supports automatic reporting of log events above error level to sentry
++ [milogo](https://github.com/manuelarte/milogo) - Field selection patten for Gin
 + [ratelimiter](https://github.com/axiaoxin-com/ratelimiter) - Gin middleware for token bucket ratelimiter.
 + [servefiles](https://github.com/rickb777/servefiles) - serving static files with performance-enhancing cache control headers; also handles gzip & brotli compressed files 
 + [gin-brotli](https://github.com/anargu/gin-brotli) - Gin middleware to enable Brotli compression
