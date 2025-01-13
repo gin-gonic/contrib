@@ -65,3 +65,4 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-jwt-cognito](https://github.com/akhettar/gin-jwt-cognito) - validate jwt tokens issued by [amazon cognito](https://aws.amazon.com/cognito/)
 + [gin-pagination](https://github.com/webstradev/gin-pagination) - A simple and customizable pagination middleware for Gin
 + [gin-opentelemetry](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/main/instrumentation/github.com/gin-gonic/gin/otelgin) - Gin middleware for OpenTelemetry, you can also use OpenTelemetry via [Alibaba Compile-Time Auto Instrumentation](https://github.com/alibaba/opentelemetry-go-auto-instrumentation) or [OpenTelemetry Auto Instrumentation using eBPF](https://github.com/open-telemetry/opentelemetry-go-instrumentation) without changing any code
++ [scs_gin_adapter](https://github.com/39george/scs_gin_adapter) gin adapter for [SCS](https://github.com/alexedwards/scs) HTTP Session Management
