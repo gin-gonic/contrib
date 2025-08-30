@@ -52,7 +52,6 @@ Each author is responsible for maintaining their own code, although if you submi
 + [gin-session-middleware](https://github.com/go-session/gin-session) - A efficient, safely and easy-to-use session library for Go.
 + [ginception](https://github.com/kubastick/ginception) - Nice looking exception page
 + [gin-inspector](https://github.com/fatihkahveci/gin-inspector) - Gin middleware for investigating http request.
-+ [gin-dump](https://github.com/tpkeeper/gin-dump) - Gin middleware/handler to dump header/body of request and response. Very helpful for debugging your applications.
 + [go-gin-prometheus](https://github.com/zsais/go-gin-prometheus) - Gin Prometheus metrics exporter
 + [ginprom](https://github.com/chenjiandongx/ginprom) - Prometheus metrics exporter for Gin
 + [gin-go-metrics](https://github.com/bmc-toolbox/gin-go-metrics) - Gin middleware to gather and store metrics using [rcrowley/go-metrics](https://github.com/rcrowley/go-metrics)
