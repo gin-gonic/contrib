@@ -68,3 +68,4 @@ Each author is responsible for maintaining their own code, although if you submi
 + [scs_gin_adapter](https://github.com/39george/scs_gin_adapter) gin adapter for [SCS](https://github.com/alexedwards/scs) HTTP Session Management
 + [apitally](https://github.com/apitally/apitally-go) - Gin middleware for API monitoring, analytics and request logging with [Apitally](https://apitally.io/gin)
 + [go-osinfo-gin](https://github.com/raza001/go-osinfo-gin) - A tiny Go package that exposes system/OS information and runtime metrics. 
++ [gin-guard](https://github.com/Guard-Core/gin-guard) - Security middleware for Gin with IP filtering, rate limiting with automatic bans, attack pattern detection and security headers.
